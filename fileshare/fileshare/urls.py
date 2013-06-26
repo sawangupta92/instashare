@@ -16,4 +16,6 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^view_of_create_company','sharing.views.view_of_create_company'),
     url(r'^create_company','sharing.views.create_company'),
+    url(r'^create_employee','sharing.views.create_employee'),
+    url(r'^view_of_create_employee','sharing.views.view_of_create_employee'),
 )

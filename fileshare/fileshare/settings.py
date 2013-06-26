@@ -89,7 +89,7 @@ SECRET_KEY = '6))in%4^#ygdq+v-36vbfe$&##uxdzf)gdg24yaebs=w#=6wnu'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,7 +108,7 @@ ROOT_URLCONF = 'fileshare.urls'
 WSGI_APPLICATION = 'fileshare.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/sawan/Desktop/instashare/fileshare/company_template/'
+    '/home/sawan/Desktop/instashare/fileshare/'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'sharing',
+    'softdelete',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
