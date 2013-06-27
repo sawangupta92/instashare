@@ -29,3 +29,25 @@ def create_employee(request):
 	r.save()
 	return render_to_response('employee_template/create_company.html')
 	pass
+def view_of_delete_company(request):
+	all_objects=company.objects.filter()
+	return render_to_response('company_template/view_of_delete_company.html',{'a':all_objects})
+	pass
+@csrf_exempt
+def delete_company(request):
+	u=User.objects.get(username=request.POST.get('company_name','q'))
+	a=company.objects.get(company_id=u)
+	a.delete()
+	return render_to_response('company_template/delete_company.html')
+	pass
+def view_of_delete_employee(request):
+	all_objects=employee.objects.filter()
+	return render_to_response('employee_template/view_of_delete_employee.html',{'a':all_objects})
+	pass
+@csrf_exempt
+def delete_employee(request):
+	u=User.objects.get(username=request.POST.get('employee_name','q'))
+	a=employee.objects.get(employee_id=u)
+	a.delete()
+	return render_to_response('employee_template/delete_employee.html')
+	pass

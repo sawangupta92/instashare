@@ -1,0 +1,10 @@
+<form method='post' action='delete_company'>
+<select name='company_name'>
+{% for obj in a %}
+<option>
+{{obj.company_id}}
+</option>
+{%endfor%}
+</select>
+<input type='submit'/>
+</form>

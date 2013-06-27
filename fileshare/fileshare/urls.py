@@ -15,7 +15,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^view_of_create_company','sharing.views.view_of_create_company'),
+    url(r'^view_of_delete_company','sharing.views.view_of_delete_company'),
     url(r'^create_company','sharing.views.create_company'),
+    url(r'^delete_company','sharing.views.delete_company'),
     url(r'^create_employee','sharing.views.create_employee'),
     url(r'^view_of_create_employee','sharing.views.view_of_create_employee'),
 )
