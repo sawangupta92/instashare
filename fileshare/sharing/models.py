@@ -21,4 +21,4 @@ class roles(models.Model):
 	role_name=models.CharField(max_length=20)
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
-	u_id=models.ForeignKey(User)
+	u_id=models.ForeignKey(User)	

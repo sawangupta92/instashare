@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=14)),
             ('website', self.gf('django.db.models.fields.URLField')(max_length=200)),
             ('fb_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
             ('twitter_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
@@ -34,6 +34,21 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'sharing', ['employee'])
 
+        # Adding model 'roles'
+        db.create_table(u'sharing_roles', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('role_name', self.gf('django.db.models.fields.CharField')(max_length=20)),
+        ))
+        db.send_create_signal(u'sharing', ['roles'])
+
+        # Adding model 'roles_emp'
+        db.create_table(u'sharing_roles_emp', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('roles_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.roles'])),
+            ('u_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+        ))
+        db.send_create_signal(u'sharing', ['roles_emp'])
+
 
     def backwards(self, orm):
         # Deleting model 'company'
@@ -41,6 +56,12 @@ class Migration(SchemaMigration):
 
         # Deleting model 'employee'
         db.delete_table(u'sharing_employee')
+
+        # Deleting model 'roles'
+        db.delete_table(u'sharing_roles')
+
+        # Deleting model 'roles_emp'
+        db.delete_table(u'sharing_roles_emp')
 
 
     models = {
@@ -86,7 +107,7 @@ class Migration(SchemaMigration):
             'company_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'fb_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'phone_no': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'phone_no': ('django.db.models.fields.CharField', [], {'max_length': '14'}),
             'twitter_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         },
@@ -101,6 +122,17 @@ class Migration(SchemaMigration):
             'project_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'twitter_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+        },
+        u'sharing.roles': {
+            'Meta': {'object_name': 'roles'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'role_name': ('django.db.models.fields.CharField', [], {'max_length': '20'})
+        },
+        u'sharing.roles_emp': {
+            'Meta': {'object_name': 'roles_emp'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'roles_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sharing.roles']"}),
+            'u_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 

@@ -20,4 +20,6 @@ urlpatterns = patterns('',
     url(r'^delete_company','sharing.views.delete_company'),
     url(r'^create_employee','sharing.views.create_employee'),
     url(r'^view_of_create_employee','sharing.views.view_of_create_employee'),
+    url(r'^view_of_login','sharing.views.view_of_login'),
+    url(r'^login','sharing.views.login'), 
 )
