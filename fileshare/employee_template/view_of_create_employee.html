@@ -8,6 +8,12 @@ email id<input type='text' name= 'email_id'/><br/>
 fb_id<input type='text' name= 'fb_id'/><br/>
 twitter_id<input type='text' name= 'tw_id'/><br/>
 password<input type='password' name= 'password'/><br/>
-role <input type='text' name='role'/><br/>
+role <select name='employee_name'>
+{% for obj in a %}
+<option>
+{{obj.role_name}}
+</option>
+{%endfor%}
+</select>
 <input type='submit'>
 </form>

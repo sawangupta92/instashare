@@ -108,7 +108,7 @@ ROOT_URLCONF = 'fileshare.urls'
 WSGI_APPLICATION = 'fileshare.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/Users/shubhamgupta/Documents/instashare/instashare/fileshare'
+    '/home/sawan/Desktop/instashare/instashare/fileshare'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
