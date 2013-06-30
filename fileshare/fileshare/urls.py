@@ -25,6 +25,6 @@ urlpatterns = patterns('',
     url(r'^view_of_login','sharing.views.view_of_login'),
     url(r'^login','sharing.views.login'), 
     url(r'^view_of_logout','sharing.views.view_of_logout'),
-    url(r'^logout','sharing.views.logout'), 
+    url(r'^mylogout','sharing.views.mylogout'), 
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
 )

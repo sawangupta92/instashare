@@ -1,3 +1,11 @@
+<form method='get' action='save_update'>
+<select name='field'>
 {%for f in fields%}
-{{f}}
-{%endfor%}dd
+<option>
+{{f}}	
+</option>
+{%endfor%}
+</select>
+what to update..??
+<input type='text' name='update'>
+</form>

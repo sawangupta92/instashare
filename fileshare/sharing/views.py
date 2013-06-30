@@ -53,9 +53,14 @@ def delete_employee(request):
 	a=employee.objects.get(employee_id=u)
 	a.delete()
 	return render_to_response('employee_template/delete_employee.html')
-# def view_of_update_company(request):
-# 	company_fields=company._meta.get_all_field_names()
-# 	return render_to_response('company_template/view_of_update_company.html',{'fields',company_field})
+@login_required
+def view_of_update_company(request):
+	company_object=company()
+	company_fields=company_object.fields_of_company()
+	return render_to_response('company_template/view_of_update_company.html',{'fields':company_fields})
+def save_update(request):
+	f=request.GET.get('field','q')
+	a=User.objects.get(f=request.GET.get('update','q'))
 def view_of_login(request):
 	return render_to_response('index/view_of_login.html')
 def index(request):
@@ -75,6 +80,6 @@ def login(request):
 		return render_to_response('index/login.html',{'a':a})
 def view_of_logout(request):
 	return render_to_response('index/view_of_logout.html')
-def logout(request):
+def mylogout(request):
 	logout(request)
-	return render_to_response('index/logout.html',{'a':a})
+	return render_to_response('index/mylogout.html')
