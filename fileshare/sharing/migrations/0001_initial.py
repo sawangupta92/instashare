@@ -23,6 +23,7 @@ class Migration(SchemaMigration):
         # Adding model 'employee'
         db.create_table(u'sharing_employee', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.company'])),
             ('employee_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('project_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('project_desc', self.gf('django.db.models.fields.CharField')(max_length=500)),
@@ -114,6 +115,7 @@ class Migration(SchemaMigration):
         u'sharing.employee': {
             'Meta': {'object_name': 'employee'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'company_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sharing.company']"}),
             'employee_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'fb_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

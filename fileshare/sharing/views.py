@@ -8,10 +8,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 def view_of_create_company(request):
 	return render_to_response('company_template/view_of_create_company.html')
+@csrf_exempt
 def create_company(request):
-	u=User.objects.create(username=request.POST.get('name','q'),password=request.POST.get('password','q'),email=request.POST.get('email_id','q'))
+	u=User.objects.create_user(username=request.POST.get('name','q'),password=request.POST.get('password','q'),email=request.POST.get('email_id','q'))
 	c=company.objects.create(company_id=u,address=request.POST.get('address','q') ,phone_no=request.POST.get('phone','q'), website=request.POST.get('website','q'), fb_id=request.POST.get('fb_id','q'), twitter_id=request.POST.get('twitter_id','q'))
-	e=employee.objects.create(employee_id=u,address=request.POST.get('e_address','q') ,phone_no=request.POST.get('e_phone','q'),fb_id=request.POST.get('e_fb_id','q'), twitter_id=request.POST.get('e_tw_id','q'))
+	e=employee.objects.create(employee_id=u,company_id=c,address=request.POST.get('e_address','q') ,phone_no=request.POST.get('e_phone','q'),fb_id=request.POST.get('e_fb_id','q'), twitter_id=request.POST.get('e_tw_id','q'))
 	r=roles_emp.objects.create(roles_id=roles.objects.get(role_name='super admin'), u_id=u)
 	u.save()
 	c.save()
@@ -25,8 +26,10 @@ def view_of_create_employee(request):
 	pass
 @csrf_exempt
 def create_employee(request):
-	u=User.objects.create(username=request.POST.get('name','q'),password=request.POST.get('password','q'),email=request.POST.get('email_id','q'))
-	e=employee.objects.create(employee_id=u,address=request.POST.get('address','q') ,phone_no=request.POST.get('phone','q'),fb_id=request.POST.get('fb_id','q'), twitter_id=request.POST.get('tw_id','q'))
+	u=User.objects.create_user(username=request.POST.get('name','q'),password=request.POST.get('password','q'),email=request.POST.get('email_id','q'))
+	u_c=User.objects.get(username=request.POST.get('c_name','q'))
+	c=company.objects.get(company_id=u_c)
+	e=employee.objects.create(employee_id=u,company_id=c,address=request.POST.get('address','q') ,phone_no=request.POST.get('phone','q'),fb_id=request.POST.get('fb_id','q'), twitter_id=request.POST.get('tw_id','q'))
 	r_id=roles.objects.get(role_name=request.POST.get('role','tester'))
 	r=roles_emp.objects.create(roles_id=r_id, u_id=u)
 	u.save()
