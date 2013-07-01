@@ -1,6 +1,6 @@
 from django.db import models
-from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
+from filer.fields.file import FilerFileField
 class company(models.Model):
 	company_id=models.ForeignKey(User)
 	address=models.CharField(max_length=100)
@@ -26,3 +26,5 @@ class roles(models.Model):
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
 	u_id=models.ForeignKey(User)	
+class upload_file(models.Model):
+	read_me = FilerFileField(null=True, blank=True)
