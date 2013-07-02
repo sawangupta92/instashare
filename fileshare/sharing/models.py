@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from filer.fields.file import FilerFileField
+from django.core.files import File
 class company(models.Model):
 	company_id=models.ForeignKey(User)
 	address=models.CharField(max_length=100)
@@ -25,6 +26,8 @@ class roles(models.Model):
 	role_name=models.CharField(max_length=20)
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
-	u_id=models.ForeignKey(User)	
+	u_id=models.ForeignKey(User)
+class my_file(models.Model):
+	f=models.FileField(upload_to='docs')
 class upload_file(models.Model):
 	read_me = FilerFileField(null=True, blank=True)

@@ -24,8 +24,10 @@ urlpatterns = patterns('',
     url(r'^view_of_delete_employee','sharing.views.view_of_delete_employee'),
     url(r'^delete_employee','sharing.views.delete_employee'),
     url(r'^view_of_login','sharing.views.view_of_login'),
-    url(r'^login','sharing.views.login'), 
+    url(r'^mylogin','sharing.views.mylogin'), 
     url(r'^view_of_logout','sharing.views.view_of_logout'),
     url(r'^mylogout','sharing.views.mylogout'), 
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
+    url(r'^attachments/',include('attachments.urls')),
+    url(r'^test','sharing.views.test')
 )

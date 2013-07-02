@@ -6,6 +6,9 @@ from django.shortcuts import render_to_response
 from sharing.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from filer.models.filemodels import File
+from sharing.models import *
+from attachments.models import Attachment
 def view_of_create_company(request):
 	return render_to_response('company_template/view_of_create_company.html')
 @csrf_exempt
@@ -69,20 +72,29 @@ def view_of_login(request):
 def index(request):
 	return render_to_response('index/index.html')
 @csrf_exempt
-def login(request):
+def mylogin(request):
 	user = authenticate(username=request.POST.get('username','q'), password=request.POST.get('password','q'))
 	if user is not None:
 		if user.is_active:
 			login(request, user) 
-			return render_to_response('index/login.html')
+			return render_to_response('index/mylogin.html')
 		else:
 			a='unsuccessful'
-			return render_to_response('index/login.html',{'a':a})
+			return render_to_response('index/mylogin.html',{'a':a})
 	else:
 		a='unsuccessful'
-		return render_to_response('index/login.html',{'a':a})
+		return render_to_response('index/mylogin.html',{'a':a})
 def view_of_logout(request):
 	return render_to_response('index/view_of_logout.html')
 def mylogout(request):
 	logout(request)
 	return render_to_response('index/mylogout.html')
+def test(request):
+	a=Attachment()
+	myFile=File(open('/Users/shubhamgupta/Documents/instashare/smedia/filer_private/2013/07/02/kk.txt','r'))
+	u=User.objects.get(id=2)
+	a.creator=u
+	a.attachment_file=myFile
+	a.save()
+	myFile.close()
+	return render_to_response()
