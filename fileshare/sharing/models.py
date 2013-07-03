@@ -27,7 +27,9 @@ class roles(models.Model):
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
 	u_id=models.ForeignKey(User)
-class my_file(models.Model):
-	f=models.FileField(upload_to='docs')
-class upload_file(models.Model):
-	read_me = FilerFileField(null=True, blank=True)
+class file_upload(models.Model):
+	my_file=models.FileField(upload_to='static')
+# class my_file(models.Model):
+# 	f=models.FileField(upload_to='docs')
+# class upload_file(models.Model):
+	# read_me = FilerFileField(null=True, blank=True)

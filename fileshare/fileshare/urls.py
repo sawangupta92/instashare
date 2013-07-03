@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
-
+from django.conf import settings
+import file_picker
+file_picker.autodiscover()
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -29,5 +31,9 @@ urlpatterns = patterns('',
     url(r'^mylogout','sharing.views.mylogout'), 
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
     url(r'^attachments/',include('attachments.urls')),
-    url(r'^test','sharing.views.test')
+    url(r'^test','sharing.views.test'),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/Users/shubhamgupta/Desktop','show_indexes':True}),
+    url(r'^view_of_upload_file','sharing.views.view_of_upload_file'),
+    url(r'^upload_file','sharing.views.upload_file'),
+    # url(r'^file-picker/',include(file_picker.site.urls)),
 )

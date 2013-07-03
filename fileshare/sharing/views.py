@@ -1,3 +1,4 @@
+# from .forms import UploadFileForm
 from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
 from django.contrib.auth import logout
@@ -89,12 +90,13 @@ def view_of_logout(request):
 def mylogout(request):
 	logout(request)
 	return render_to_response('index/mylogout.html')
-def test(request):
-	a=Attachment()
-	myFile=File(open('/Users/shubhamgupta/Documents/instashare/smedia/filer_private/2013/07/02/kk.txt','r'))
-	u=User.objects.get(id=2)
-	a.creator=u
-	a.attachment_file=myFile
-	a.save()
-	myFile.close()
-	return render_to_response()
+def view_of_upload_file(request):
+	# form = UploadFileForm(request.POST, request.FILES)
+	return render_to_response('file/view_of_upload_file.html')
+@csrf_exempt
+def upload_file(request):
+	document=request.POST.get('document','oops')
+	a=file_upload.objects.create(my_file=document)
+	document
+	# a.save()
+	return render_to_response('file/upload_file.html',{'s',a.my_file.url})
