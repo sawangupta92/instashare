@@ -1,4 +1,6 @@
 # from .forms import UploadFileForm
+from django.core.files.base import ContentFile
+from django.core.files import File
 from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
 from django.contrib.auth import logout
@@ -7,9 +9,9 @@ from django.shortcuts import render_to_response
 from sharing.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from filer.models.filemodels import File
+# from filer.models.filemodels import File
 from sharing.models import *
-from attachments.models import Attachment
+# from attachments.models import Attachment
 def view_of_create_company(request):
 	return render_to_response('company_template/view_of_create_company.html')
 @csrf_exempt
@@ -85,7 +87,7 @@ def mylogin(request):
 	else:
 		a='unsuccessful'
 		return render_to_response('index/mylogin.html',{'a':a})
-def view_of_logout(request):
+def view_of_logout(requesFilt):
 	return render_to_response('index/view_of_logout.html')
 def mylogout(request):
 	logout(request)
@@ -93,10 +95,15 @@ def mylogout(request):
 def view_of_upload_file(request):
 	# form = UploadFileForm(request.POST, request.FILES)
 	return render_to_response('file/view_of_upload_file.html')
+def handle_uploaded_file(f):
+	with open('some/file/name.txt', 'wb+') as destination:
+		for chunk in f.chunks():
+			destination.write(chunk)
 @csrf_exempt
 def upload_file(request):
-	document=request.POST.get('document','oops')
-	a=file_upload.objects.create(my_file=document)
-	document
-	# a.save()
-	return render_to_response('file/upload_file.html',{'s',a.my_file.url})
+	form=file_upload(request.POST, request.FILES)
+	instance=my_file(file_to_upload=request.FILES['document'])
+	instance.save()
+	return render_to_response('file/upload_file.html')
+def test(request):
+	return render_to_response('index/test.html')

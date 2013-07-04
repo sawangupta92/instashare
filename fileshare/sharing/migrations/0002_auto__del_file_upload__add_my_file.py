@@ -8,71 +8,27 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'company'
-        db.create_table(u'sharing_company', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=14)),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('fb_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('twitter_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-        ))
-        db.send_create_signal(u'sharing', ['company'])
+        # Deleting model 'file_upload'
+        db.delete_table(u'sharing_file_upload')
 
-        # Adding model 'employee'
-        db.create_table(u'sharing_employee', (
+        # Adding model 'my_file'
+        db.create_table(u'sharing_my_file', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.company'])),
-            ('employee_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('project_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('project_desc', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('fb_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('twitter_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
+            ('file_to_upload', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
         ))
-        db.send_create_signal(u'sharing', ['employee'])
-
-        # Adding model 'roles'
-        db.create_table(u'sharing_roles', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('role_name', self.gf('django.db.models.fields.CharField')(max_length=20)),
-        ))
-        db.send_create_signal(u'sharing', ['roles'])
-
-        # Adding model 'roles_emp'
-        db.create_table(u'sharing_roles_emp', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('roles_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.roles'])),
-            ('u_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
-        db.send_create_signal(u'sharing', ['roles_emp'])
-
-        # Adding model 'file_upload'
-        db.create_table(u'sharing_file_upload', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('my_file', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
-        ))
-        db.send_create_signal(u'sharing', ['file_upload'])
+        db.send_create_signal(u'sharing', ['my_file'])
 
 
     def backwards(self, orm):
-        # Deleting model 'company'
-        db.delete_table(u'sharing_company')
+        # Adding model 'file_upload'
+        db.create_table(u'sharing_file_upload', (
+            ('my_file', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'sharing', ['file_upload'])
 
-        # Deleting model 'employee'
-        db.delete_table(u'sharing_employee')
-
-        # Deleting model 'roles'
-        db.delete_table(u'sharing_roles')
-
-        # Deleting model 'roles_emp'
-        db.delete_table(u'sharing_roles_emp')
-
-        # Deleting model 'file_upload'
-        db.delete_table(u'sharing_file_upload')
+        # Deleting model 'my_file'
+        db.delete_table(u'sharing_my_file')
 
 
     models = {
@@ -135,10 +91,10 @@ class Migration(SchemaMigration):
             'twitter_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         },
-        u'sharing.file_upload': {
-            'Meta': {'object_name': 'file_upload'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'my_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100'})
+        u'sharing.my_file': {
+            'Meta': {'object_name': 'my_file'},
+            'file_to_upload': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'sharing.roles': {
             'Meta': {'object_name': 'roles'},

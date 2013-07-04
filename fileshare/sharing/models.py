@@ -1,6 +1,7 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
-from filer.fields.file import FilerFileField
+# from filer.fields.file import FilerFileField
 from django.core.files import File
 class company(models.Model):
 	company_id=models.ForeignKey(User)
@@ -27,9 +28,9 @@ class roles(models.Model):
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
 	u_id=models.ForeignKey(User)
-class file_upload(models.Model):
-	my_file=models.FileField(upload_to='static')
-# class my_file(models.Model):
-# 	f=models.FileField(upload_to='docs')
+class file_upload(forms.Form):
+	myfile=forms.FileField()
+class my_file(models.Model):
+	file_to_upload=models.FileField(upload_to='static')
 # class upload_file(models.Model):
 	# read_me = FilerFileField(null=True, blank=True)
