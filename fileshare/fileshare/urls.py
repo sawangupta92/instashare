@@ -31,9 +31,10 @@ urlpatterns = patterns('',
     url(r'^mylogout','sharing.views.mylogout'), 
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
     # url(r'^attachments/',include('attachments.urls')),
-    url(r'^test','sharing.views.test'),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/sawan/Desktop/instashare/fileshare/media/static/','show_indexes':True}),
+    # url(r'^(?P<page>.+?)/$','sharing.views.test'),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': request.user,'show_indexes':True}),
     url(r'^view_of_upload_file','sharing.views.view_of_upload_file'),
     url(r'^upload_file','sharing.views.upload_file'),
     # url(r'^file-picker/',include(file_picker.site.urls)),
+    # http://stackoverflow.com/questions/1539697/can-i-filter-on-request-user-when-using-django-generic-views
 )

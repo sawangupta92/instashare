@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 from django.contrib.auth.models import User
+import os
 # from filer.fields.file import FilerFileField
 from django.core.files import File
 class company(models.Model):
@@ -31,6 +32,10 @@ class roles_emp(models.Model):
 class file_upload(forms.Form):
 	myfile=forms.FileField()
 class my_file(models.Model):
-	file_to_upload=models.FileField(upload_to='static')
+	employee_who_added_file=models.ForeignKey(employee)
+	def get_upload_path(instance, filename):
+		return os.path.join(
+			"user_%d" % instance.employee_who_added_file.id, filename)
+	file_to_upload=models.FileField(upload_to=get_upload_path)
 # class upload_file(models.Model):
 	# read_me = FilerFileField(null=True, blank=True)

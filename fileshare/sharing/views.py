@@ -77,33 +77,32 @@ def index(request):
 @csrf_exempt
 def mylogin(request):
 	user = authenticate(username=request.POST.get('username','q'), password=request.POST.get('password','q'))
+	a='unsuccessful'
 	if user is not None:
 		if user.is_active:
 			login(request, user) 
 			return render_to_response('index/mylogin.html')
 		else:
-			a='unsuccessful'
 			return render_to_response('index/mylogin.html',{'a':a})
 	else:
-		a='unsuccessful'
 		return render_to_response('index/mylogin.html',{'a':a})
 def view_of_logout(requesFilt):
 	return render_to_response('index/view_of_logout.html')
 def mylogout(request):
 	logout(request)
 	return render_to_response('index/mylogout.html')
+@login_required
 def view_of_upload_file(request):
-	# form = UploadFileForm(request.POST, request.FILES)
 	return render_to_response('file/view_of_upload_file.html')
-def handle_uploaded_file(f):
-	with open('some/file/name.txt', 'wb+') as destination:
-		for chunk in f.chunks():
-			destination.write(chunk)
 @csrf_exempt
+@login_required
 def upload_file(request):
 	form=file_upload(request.POST, request.FILES)
-	instance=my_file(file_to_upload=request.FILES['document'])
+	user=User.objects.get(username=request.user)
+	emp=employee.objects.get(employee_id=user)
+	instance=my_file(file_to_upload=request.FILES['document'],employee_who_added_file=emp)
 	instance.save()
 	return render_to_response('file/upload_file.html')
-def test(request):
-	return render_to_response('index/test.html')
+# def test(request,page):
+	# page='sawan'
+	# return render_to_response('index/test.html')

@@ -50,12 +50,13 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'sharing', ['roles_emp'])
 
-        # Adding model 'file_upload'
-        db.create_table(u'sharing_file_upload', (
+        # Adding model 'my_file'
+        db.create_table(u'sharing_my_file', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('my_file', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            ('employee_who_added_file', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.employee'])),
+            ('file_to_upload', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
         ))
-        db.send_create_signal(u'sharing', ['file_upload'])
+        db.send_create_signal(u'sharing', ['my_file'])
 
 
     def backwards(self, orm):
@@ -71,8 +72,8 @@ class Migration(SchemaMigration):
         # Deleting model 'roles_emp'
         db.delete_table(u'sharing_roles_emp')
 
-        # Deleting model 'file_upload'
-        db.delete_table(u'sharing_file_upload')
+        # Deleting model 'my_file'
+        db.delete_table(u'sharing_my_file')
 
 
     models = {
@@ -135,10 +136,11 @@ class Migration(SchemaMigration):
             'twitter_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         },
-        u'sharing.file_upload': {
-            'Meta': {'object_name': 'file_upload'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'my_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100'})
+        u'sharing.my_file': {
+            'Meta': {'object_name': 'my_file'},
+            'employee_who_added_file': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sharing.employee']"}),
+            'file_to_upload': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'sharing.roles': {
             'Meta': {'object_name': 'roles'},

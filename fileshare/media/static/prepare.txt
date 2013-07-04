@@ -1,0 +1,13 @@
+Rack App.
+
+Directory struct.
+
+Flow of the app - Two faces.
+
+Interaction with WeConnect.
+
+Time slots: 12 * 2.
+
+Pusher.
+
+Kiosk Setup.
