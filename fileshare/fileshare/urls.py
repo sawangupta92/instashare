@@ -1,5 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
+from django.views.generic import TemplateView
+# import django.views.generic.date_based as views
+from django.views.generic import dates as view
+from django.contrib.auth.decorators import login_required
 # import file_picker
 # file_picker.autodiscover()
 # Uncomment the next two lines to enable the admin:
@@ -31,10 +35,12 @@ urlpatterns = patterns('',
     url(r'^mylogout','sharing.views.mylogout'), 
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
     # url(r'^attachments/',include('attachments.urls')),
-    # url(r'^(?P<page>.+?)/$','sharing.views.test'),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': request.user,'show_indexes':True}),
+    url(r'^test','sharing.views.test'),
+    url(r'^media/(?P<path>.*)$',login_required(direct_to_template),'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes':True}),
     url(r'^view_of_upload_file','sharing.views.view_of_upload_file'),
     url(r'^upload_file','sharing.views.upload_file'),
+    # url(r'^media/')
+
     # url(r'^file-picker/',include(file_picker.site.urls)),
     # http://stackoverflow.com/questions/1539697/can-i-filter-on-request-user-when-using-django-generic-views
 )

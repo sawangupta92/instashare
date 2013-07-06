@@ -106,3 +106,9 @@ def upload_file(request):
 # def test(request,page):
 	# page='sawan'
 	# return render_to_response('index/test.html')
+@login_required
+def test(request):
+	return render_to_response('index/test.html',{'user':request.user})
+	pass
+def test1(request):
+	pass

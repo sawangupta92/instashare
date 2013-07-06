@@ -50,7 +50,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/Users/shubhamgupta/Documents/instashare/fileshare/media'
+MEDIA_ROOT = '/home/sawan/Desktop/instashare/fileshare/media'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -108,7 +108,7 @@ ROOT_URLCONF = 'fileshare.urls'
 WSGI_APPLICATION = 'fileshare.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/Users/shubhamgupta/Documents/instashare/fileshare'
+    '/home/sawan/Desktop/instashare/fileshare'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
