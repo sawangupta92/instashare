@@ -36,9 +36,12 @@ urlpatterns = patterns('',
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
     # url(r'^attachments/',include('attachments.urls')),
     url(r'^test','sharing.views.test'),
-    url(r'^media/(?P<path>.*)$',login_required(direct_to_template),'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes':True}),
+    url(r'^test1','sharing.views.test1'),
+    # url(r'^media/(?P<path>.*)$',login_required('direct_to_template'),'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes':True}),
     url(r'^view_of_upload_file','sharing.views.view_of_upload_file'),
     url(r'^upload_file','sharing.views.upload_file'),
+    url(r'^index','sharing.views.index'),
+    url(r'^fail','sharing.views.fail'),
     # url(r'^media/')
 
     # url(r'^file-picker/',include(file_picker.site.urls)),
