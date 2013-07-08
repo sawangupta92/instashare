@@ -77,16 +77,18 @@ def delete_employee(request):#admin decorator logout
 	a=employee.objects.get(employee_id=u)
 	a.delete()
 	return render_to_response('employee_template/delete_employee.html')
-@login_required
-@admin_decorator_required
+# @login_required
+# @admin_decorator_required
 def view_of_update_company(request):
 	company_object=company()
 	company_fields=company_object.fields_of_company()
 	return render_to_response('company_template/view_of_update_company.html',{'fields':company_fields})
 @admin_decorator_required
-def save_update(request):
-	f=request.GET.get('field','q')
-	a=User.objects.get(f=request.GET.get('update','q'))
+def company_save_update(request):
+	a=company.objects.get(company_id=User.objects.get(username=request.user))
+	setattr(a,request.GET.get('field','w'),request.GET.get('update','w'))
+	a.save()
+	return render_to_response('company_template/company_save_update.html')
 def view_of_login(request):
 	return render_to_response('index/view_of_login.html')
 @login_required
