@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'sharing',
+    'bootstrapped',
     # 'filer',
     # 'mptt',
     # 'easy_thumbnails',

@@ -1,22 +1,90 @@
-view_of_create_company
-<form method="post" action="create_company">
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<form method="post" action="create_company" class=" bs-docs-example form-horizontal">
+  <fieldset>
 	{% csrf_token %}
-	name <input type='text' name='name'> <br/>
-	password <input type='password' name='password'> <br/>
-	add <input type='text' name='address'> <br/>
-	phone <input type='text' name='phone'> <br/>
-	website <input type='text' name='website'> <br/>
-	email id <input type='text' name='email_id'> <br/>	
-	fb_id <input type='text' name='fb_id'> <br/>
-	twitter_id <input type='text' name='twitter_id'> <br/><br/><br/><br/><br/><br/>
-	enter your details<br/>
-	name <input type='text' name= 'e_name'/><br/>
-	add<input type='text' name= 'e_address'/> <br/>
-	phone<input type='text' name= 'e_phone'/><br/>
-	email id<input type='text' name= 'e_email_id'/><br/>
-	fb_id<input type='text' name= 'e_fb_id'/><br/>
-	twitter_id<input type='text' name= 'e_tw_id'/><br/>
-	password<input type='password' name= 'e_password'/><br/>
-<input type='submit'> <br/>
+<legend>view_of_create_company</legend>
+	<div class="control-group row2">
+	    <div class="controls row2">
+			<input type='text' name='name' placeholder="username"> 
+		</div>
+	</div>
+	<div class="control-group row2" for="Inputpassword">
+	    <div class="controls">
+			<input type='password' name='password' placeholder="password">
+		</div>
+	</div>
+	<div class="control-group row2">
+	    <div class="controls">
+			<input type='text' name='address' placeholder="address"> 
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name='phone' placeholder="contact number"> 
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+	    	<div class="input-prepend input-append">
+				<span class="add-on">$</span>
+				<input type='text' name='website' placeholder="website">
+			</div> 
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name='email_id' placeholder="email address"> 
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name='fb_id' placeholder="facebook id"> 
+		</div>
+	</div>	
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name='twitter_id' placeholder="twitter id"> 
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name= 'e_name' placeholder="your name">
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='password' name= 'e_password'/ placeholder="password">
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name= 'e_address' placeholder="your address"/> 
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name= 'e_phone'/ placeholder="your contact number">
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name= 'e_email_id'/ placeholder="your email address">
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name= 'e_fb_id'/ placeholder="facebook address">
+		</div>
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+			<input type='text' name= 'e_tw_id'/ placeholder="twitter address">
+		</div>
+	</div>
+<input type='submit' class="btn"> 
+ </fieldset>
 </form>
 <a href="/index">index</a>
+</body>
+</html>

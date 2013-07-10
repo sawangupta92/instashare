@@ -1,0 +1,10 @@
+<form method='POST' action='delete_my_file'>
+<select name='file_to_delete'>
+{% for file in files %}
+<option>
+  {{file.file_to_upload}}
+</option>
+{%endfor%}
+</select>
+<input type='submit'/>
+</form>

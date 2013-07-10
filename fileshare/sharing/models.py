@@ -25,6 +25,9 @@ class employee(models.Model):
 	website=models.URLField( max_length=200)
 	fb_id=models.URLField(max_length=200)
 	twitter_id=models.URLField(max_length=200)
+	def fields_of_employee(request):
+		employee_fields=employee._meta.get_all_field_names()
+		return employee_fields
 class roles(models.Model):
 	role_name=models.CharField(max_length=20)
 class roles_emp(models.Model):

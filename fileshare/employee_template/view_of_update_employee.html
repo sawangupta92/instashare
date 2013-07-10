@@ -1,0 +1,13 @@
+<form method='get' action='employee_save_update'>
+<select name='field'>
+{%for f in fields%}
+<option>
+{{f}}
+</option>
+{%endfor%}
+</select>
+what to update..??
+<input type='text' name='update'>
+<input type="submit"/>
+</form>
+<a href="/index">index</a>
