@@ -1,0 +1,64 @@
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Home</a>
+    <ul class="nav">
+      <li class="active span2"><a href="/index">Index</a></li>
+      <li class="active offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+<form method="post" action="{%url 'sign_up' %}" class="form-horizontal">
+	<fieldset>
+		{% csrf_token %}
+		<div class="controls">
+			<legend>enter details of admin</legend>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='text' required name= 'e_name' placeholder="your name">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='password' required name= 'e_password'/ placeholder="password">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='text' name= 'e_address' placeholder="your address"/> 
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='tel' required name= 'e_phone'/ placeholder="your contact number">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='email' required name= 'e_email_id'/ placeholder="your email address">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='email' required name= 'e_fb_id'/ placeholder="facebook address">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='email' name= 'e_tw_id'/ placeholder="twitter address">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type='datetime' name= 'e_tw_id'/ placeholder="test field">
+			</div>
+		</div>
+		<div class="controls">
+			<input type='submit' class="btn btn-primary"> 
+		</div>	
+ 	</fieldset>
+	</form>
+</body>
+</html>

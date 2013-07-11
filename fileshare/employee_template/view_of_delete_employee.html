@@ -1,5 +1,5 @@
-<form method='post' action='delete_company'>
-<select name='company_name'>
+<!-- <form method='post' action='delete_company'>
+<select name='employee_name'>
 {% for obj in a %}
 <option>
 {{obj.employee_id}}
@@ -9,4 +9,36 @@
 <input type='submit'/>
 </form>
 <a href="/mylogout">log out</a>
-<a href="/index">index</a>
+<a href="/index">index</a> -->
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Home</a>
+    <ul class="nav">
+      <li class="active span2"><a href="/index">Index</a></li>
+      <li class="active offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+<form method='post' action='delete_employee' class="form-horizontal">
+	{%csrf_token%}
+	<legend>Delete Employee</legend>
+<div class="control-group">
+	<div class="controls">
+		<label>select employee name</label>
+		<select name='employee_name'> <!-- pehle yahaan pe company name tha -->
+		{% for obj in a %}
+		<option>
+		{{obj.employee_id}}
+		</option>
+		{%endfor%}
+		</select>
+	</div>
+</div>
+<div class="control-group">
+	<div class="controls">
+		<input type='submit' value="delete"/>
+	</div>
+</div>
+</form>

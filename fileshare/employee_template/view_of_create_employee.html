@@ -1,22 +1,80 @@
-<form method= 'POST' action= 'create_employee'>
-name <input type='text' name= 'name'/><br/>
-company name<input type='text' name='c_name'>
-project associated with<input type='text' name= 'project_name'/><br/>
-project_desc<input type='text' name= 'project_Desc'/><br/>
-add<input type='text' name= 'address'/><br/> 
-phone<input type='text' name= 'phone'/><br/>
-email id<input type='text' name= 'email_id'/><br/>
-fb_id<input type='text' name= 'fb_id'/><br/>
-twitter_id<input type='text' name= 'tw_id'/><br/>
-password<input type='password' name= 'password'/><br/>
-role <select name='employee_name'>
-{% for obj in a %}
-<option>
-{{obj.role_name}}
-</option>
-{%endfor%}
-</select>
-<input type='submit'>
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Home</a>
+    <ul class="nav">
+      <li class="active span2"><a href="/index">Index</a></li>
+      <li class="active offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+<form method= 'POST' action= 'create_employee' class="form-horizontal">
+	{%csrf_token%}
+	<div class="control-group">
+		<div class="controls">
+			<input type='text' required name= 'name' placeholder="name"/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='password' required placeholder="password" name= 'password'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='text' required placeholder="company name" name='c_name'>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='text' placeholder="project associated with" name= 'project_name'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<textarea placeholder="project_desc" name= 'project_Desc'/></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='text' placeholder="address" name= 'address'/> 
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='tel' required placeholder="contact number" name= 'phone'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='email' required placeholder="email id" name= 'email_id'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='email' placeholder="facebook id" name= 'fb_id'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='email' placeholder="twitter_id" name= 'tw_id'/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<select name='role'>
+			{% for obj in a %}
+			<option>
+			{{obj.role_name}}
+			</option>
+			{%endfor%}
+			</select>
+		</div>
+	</div>
+		<div class="control-group">
+		<div class="controls">
+			<input type='submit'>
+		</div>
+	</div>
 </form>
-<a href="/mylogout">log out</a>
-<a href="/index">index</a>

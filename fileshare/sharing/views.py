@@ -6,11 +6,11 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from sharing.models import *
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.contrib.auth.decorators import login_required
 from sharing.models import *
 from django.template import RequestContext
-
+# django.contrib.auth.context_processors.auth
 ############################################DECORATORS#########################################
 
 class admin_decorator_required(object):
@@ -25,7 +25,7 @@ class admin_decorator_required(object):
 
 ####################################VIEW OF EMPLOYEE###########################################
 
-@admin_decorator_required
+# @admin_decorator_required
 def view_of_create_employee(request):#admin decorator logout
 	all_objects=roles.objects.filter()
 	return render_to_response('employee_template/view_of_create_employee.html',{'a':all_objects})
@@ -43,7 +43,7 @@ def create_employee(request):#admin decorator logout
 	r.save()
 	return render_to_response('employee_template/create_company.html')
 	pass
-@admin_decorator_required
+# @admin_decorator_required
 def view_of_delete_employee(request):#logout add admin decorator
 	all_objects=employee.objects.filter()
 	return render_to_response('employee_template/view_of_delete_employee.html',{'a':all_objects})
@@ -74,15 +74,16 @@ def view_of_create_company(request):#admin decorator logout
 def create_company(request):#admin decorator logout
 	u=User.objects.create_user(username=request.POST.get('name','q'),password=request.POST.get('password','q'),email=request.POST.get('email_id','q'))
 	c=company.objects.create(company_id=u,address=request.POST.get('address','q') ,phone_no=request.POST.get('phone','q'), website=request.POST.get('website','q'), fb_id=request.POST.get('fb_id','q'), twitter_id=request.POST.get('twitter_id','q'))
-	e_u=User.objects.create_user(username=request.POST.get('e_name','q'),password=request.POST.get('e_password','q'),email=request.POST.get('e_email_id','q'))
-	e=employee.objects.create(employee_id=u,company_id=c,address=request.POST.get('e_address','q') ,phone_no=request.POST.get('e_phone','q'),fb_id=request.POST.get('e_fb_id','q'), twitter_id=request.POST.get('e_tw_id','q'))
-	r=roles_emp.objects.create(roles_id=roles.objects.get(role_name='super admin'), u_id=u)
-	u.save()
+	a=employee.objects.get(employee_id=User.objects.get(username=request.user))
+	a.company_id=c
 	c.save()
-	e.save()
-	r.save()
+	a.save()
+	# a.company_id=c
+	# a.company_id.add(c)
+	# e_u=User.objects.get(username=request.user)
+	# u.save()
 	return render_to_response('company_template/create_company.html')
-@admin_decorator_required
+# @admin_decorator_required
 def view_of_delete_company(request):#logout add admin login decorator
 	all_objects=company.objects.filter()
 	return render_to_response('company_template/view_of_delete_company.html',{'a':all_objects})
@@ -107,11 +108,11 @@ def company_save_update(request):
 #########################################VIEW OF FILE##############################################
 
 @login_required
-def view_of_upload_file(request):
+def view_of_upload_file(request):#logout index delete_file view_my_file view_company_file*
 	return render_to_response('file/view_of_upload_file.html')
 @csrf_exempt
 @login_required
-def upload_file(request):
+def upload_file(request):#logout index delete_file view_my_file view_company_file* add_another_file 
 	form=file_upload(request.POST, request.FILES)
 	user=User.objects.get(username=request.user)
 	emp=employee.objects.get(employee_id=user)
@@ -119,13 +120,13 @@ def upload_file(request):
 	instance.save()
 	return render_to_response('file/upload_file.html')
 @login_required
-def view_of_my_file(request):
+def view_of_my_file(request):#logout index delete_file view_company_file* add_file
 	a=User.objects.get(username=request.user)
 	e=employee.objects.get(employee_id=a.id)
 	f=my_file.objects.filter(employee_who_added_file=e)
-	return render_to_response('file/view_of_my_file.html',{'files':f},context_instance=RequestContext('u'))
+	return render_to_response('file/view_of_my_file.html',{'files':f})
 	pass
-def view_my_company_file(request):
+def view_my_company_file(request):#logout index delete_file view_my_file add_file
 	a=User.objects.get(username=request.user)
 	e=employee.objects.get(employee_id=a.id)
 	c=company.objects.get(id=e.company_id_id)
@@ -134,14 +135,14 @@ def view_my_company_file(request):
 		files=my_file.objects.filter(employee_who_added_file=emp)
 	return render_to_response('file/view_my_company_file.html',{'files':files})
 	pass
-def view_of_delete_file(request):
+def view_of_delete_file(request):#logout index  view_my_file view_company_file* add_file
 	a=User.objects.get(username=request.user)
 	e=employee.objects.get(employee_id=a.id)
 	f=my_file.objects.filter(employee_who_added_file=e)
 	return render_to_response('file/view_of_delete_file.html',{'files':f})
 	pass
 @csrf_exempt
-def delete_my_file(request):
+def delete_my_file(request):#logout index delete_file view_my_file view_company_file* add_file
 	myfile=request.POST.get('file_to_delete')
 	f=my_file.objects.get(file_to_upload=myfile)
 	f.delete()
@@ -149,7 +150,20 @@ def delete_my_file(request):
 	pass
 
 ##########################################VIEW OF INDEX############################################
-
+# @csrf_protect
+def view_of_sign_up(request):
+	return render_to_response('index/view_of_sign_up.html')
+	pass
+@csrf_exempt
+def sign_up(request):
+	e_u=User.objects.create_user(username=request.POST.get('e_name','q'),password=request.POST.get('e_password','q'),email=request.POST.get('e_email_id','q'))
+	c=company.objects.get(id=3)
+	e=employee.objects.create(employee_id=e_u,company_id=c, address=request.POST.get('e_address','q') ,phone_no=request.POST.get('e_phone','q'),fb_id=request.POST.get('e_fb_id','q'), twitter_id=request.POST.get('e_tw_id','q'))
+	r=roles_emp.objects.create(roles_id=roles.objects.get(role_name='super admin'), u_id=e_u)
+	e.save()
+	r.save()
+	return render_to_response('index/sign_up.html')
+	pass
 def view_of_login(request):
 	return render_to_response('index/view_of_login.html')
 @login_required

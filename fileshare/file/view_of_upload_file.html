@@ -1,5 +1,27 @@
-<form method='post' action='upload_file' enctype="multipart/form-data">
-<input type='file' name='document'>
-<input type='submit'>
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Home</a>
+    <ul class="nav">
+      <li class="span1 divider-vertical "><a href="/index">Index</a></li>
+      <li class="span2 divider-vertical "><a href="/view_of_my_file">view my files</a></li>
+      <li class="span2  divider-vertical "><a href="/view_my_company_file">company files</a></li>
+      <li class="span2 divider-vertical"><a href="/view_of_delete_file">Delete file</a></li>
+      <li class="offset7"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+<form method='post' action='upload_file' enctype="multipart/form-data" class="form-horizontal">
+	<legend>Choose File To Delete</legend>
+	<div class="control-group">
+		<div class="controls">
+			<input type='file' name='document'>
+		</div>
+	</div>
+		<div class="control-group">
+		<div class="controls">
+			<input type='submit'>
+		</div>
+	</div>
 </form>
-<a href="/index">index</a>

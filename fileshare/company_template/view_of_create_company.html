@@ -1,90 +1,68 @@
  {%load bootstrap%}
  {% bootstrap_css %}
-<form method="post" action="create_company" class=" bs-docs-example form-horizontal">
-  <fieldset>
-	{% csrf_token %}
-<legend>view_of_create_company</legend>
-	<div class="control-group row2">
-	    <div class="controls row2">
-			<input type='text' name='name' placeholder="username"> 
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Home</a>
+    <ul class="nav">
+      <li class="active span2"><a href="/index">Index</a></li>
+      <li class="active offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+<form method="post" action="create_company" class="form-horizontal">
+	<fieldset>
+		{% csrf_token %}
+		<legend>view_of_create_company</legend>
+		<div class="controls">
+			<legend>enter details of company</legend>
 		</div>
-	</div>
-	<div class="control-group row2" for="Inputpassword">
-	    <div class="controls">
-			<input type='password' name='password' placeholder="password">
+		<div class="control-group">
+			<div class="controls">
+				<input type='text' required name='name' placeholder="username">
+			</div>
 		</div>
-	</div>
-	<div class="control-group row2">
-	    <div class="controls">
-			<input type='text' name='address' placeholder="address"> 
+		<div class="control-group">
+			<div class="controls">		
+				<input type='password' required name='password' placeholder="password">
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name='phone' placeholder="contact number"> 
+		<div class="control-group">
+			<div class="controls">
+				<input type='text' name='address' placeholder="address">
+			</div>
+		</div>	
+		<div class="control-group">
+			<div class="controls">
+				<input type='tel' required name='phone' placeholder="contact number"> 
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-	    	<div class="input-prepend input-append">
-				<span class="add-on">$</span>
-				<input type='text' name='website' placeholder="website">
-			</div> 
+		<div  class="control-group">
+			<div class="controls">
+<!-- 			<div class="input-prepend">
+					<span class="add-on">http:www.</span> -->
+				<input type='url' name='website' placeholder="website">
+			<!-- </div> -->
+			</div>
+		</div>		    
+		<div  class="control-group">
+			<div class="controls">
+				<input type='email' required name='email_id' placeholder="email address"> 
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name='email_id' placeholder="email address"> 
+		<div  class="control-group">
+			<div class="controls">
+				<input type='email' name='fb_id' placeholder="facebook id"> 
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name='fb_id' placeholder="facebook id"> 
+		<div class="control-group">
+			<div class="controls">
+				<input type='email' name='twitter_id' placeholder="twitter id"> 
+			</div>
 		</div>
-	</div>	
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name='twitter_id' placeholder="twitter id"> 
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name= 'e_name' placeholder="your name">
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='password' name= 'e_password'/ placeholder="password">
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name= 'e_address' placeholder="your address"/> 
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name= 'e_phone'/ placeholder="your contact number">
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name= 'e_email_id'/ placeholder="your email address">
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name= 'e_fb_id'/ placeholder="facebook address">
-		</div>
-	</div>
-	<div class="control-group">
-	    <div class="controls">
-			<input type='text' name= 'e_tw_id'/ placeholder="twitter address">
-		</div>
-	</div>
-<input type='submit' class="btn"> 
+<div class="controls">
+<input type='submit' class="btn btn-primary"> 
+</div>	
  </fieldset>
 </form>
-<a href="/index">index</a>
 </body>
 </html>

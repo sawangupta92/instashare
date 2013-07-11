@@ -1,3 +1,12 @@
-create_company
-{{a}}
-<a href="/index">index</a>
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Home</a>
+    <ul class="nav">
+      <li class="active span2"><a href="/index">Index</a></li>
+      <li class="active offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+Company Created

@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.views.generic import TemplateView
+# from sharing.views import archive
 # import django.views.generic.date_based as views
 from django.views.generic import dates as view
 from django.contrib.auth.decorators import login_required
@@ -47,6 +48,8 @@ urlpatterns = patterns('',
     url(r'^test1','sharing.views.test1'),
     url(r'^index','sharing.views.index'),
     url(r'^fail','sharing.views.fail'),
+    url(r'^sign_up','sharing.views.sign_up', name='sign_up'),
+    url(r'^view_of_sign_up','sharing.views.view_of_sign_up'),
 
 ######################## URL OF FILE ###############################
     url(r'^media/(?P<path>.*)$','django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes':True}),

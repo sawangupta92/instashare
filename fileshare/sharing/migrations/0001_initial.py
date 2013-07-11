@@ -23,13 +23,12 @@ class Migration(SchemaMigration):
         # Adding model 'employee'
         db.create_table(u'sharing_employee', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.company'])),
+            ('companyid', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.company'])),
             ('employee_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('project_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('project_desc', self.gf('django.db.models.fields.CharField')(max_length=500)),
             ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200)),
             ('fb_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
             ('twitter_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
         ))
@@ -126,15 +125,14 @@ class Migration(SchemaMigration):
         u'sharing.employee': {
             'Meta': {'object_name': 'employee'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'company_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sharing.company']"}),
+            'companyid': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sharing.company']"}),
             'employee_id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
             'fb_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'phone_no': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'project_desc': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'project_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'twitter_id': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
-            'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+            'twitter_id': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         },
         u'sharing.my_file': {
             'Meta': {'object_name': 'my_file'},
