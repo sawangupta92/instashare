@@ -16,7 +16,7 @@ class company(models.Model):
 		company_fields=company._meta.get_all_field_names()
 		return company_fields
 class employee(models.Model):
-	company_id=models.ForeignKey(company)
+	company_id=models.ForeignKey(company, null=True)
 	employee_id=models.ForeignKey(User)
 	project_name=models.CharField(max_length=50)
 	project_desc=models.CharField(max_length=500)

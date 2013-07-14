@@ -1,4 +1,25 @@
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="home_page">Home</a>
+    <ul class="nav">
+		<li class="span2"><a href="/view_of_create_company">create company</a></li>
+		<li class="span2">
+			<a href="/view_of_delete_company">delete company</a>
+		</li>
+		<li class="span2">
+			<a href="/view_of_create_employee">create employee</a>
+		</li>
+		<li class="span2">
+			<a href="/view_of_delete_employee">delete employee </a>
+		</li>
+		<li class="span2">
+			<a href="/index">index</a>
+		</li>
+      <li class="offset4"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
 login
 {{a}}
-<a href="/view_of_login"></a>
-<a href="/index">index</a>
