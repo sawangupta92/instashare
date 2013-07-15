@@ -8,7 +8,12 @@
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class="span2 divider-vertical"><a href="/index">Index</a></li>
-      <li class="offset12"><a data-toggle="modal" href="#myModal">Login</a></li>
+      {% if not user.is_authenticated %}
+        <li class="offset11"><a href="/sign_up">signup</a></li>
+        <li ><a data-toggle="modal" href="#myModal">Login</a></li>
+      {% else%}
+        <li class="offset12"><a href="/mylogout">logout</a></li>
+      {% endif %}
     </ul>
   </div>
 </div>

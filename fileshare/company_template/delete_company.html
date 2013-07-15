@@ -5,7 +5,24 @@
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class=" span2"><a href="/index">Index</a></li>
+      <li class="span2"><a data-toggle="modal" href="#myModal">log in</a> </li>
+      <li class="span2"> <a href="/sign_up">sign up</a> </li>
     </ul>
   </div>
 </div>
+<form method='POST' action='mylogin'>
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Enter Your Login Detail</h3>
+  </div>
+  <div class="modal-body">
+    <input type='text' name='username'/>
+    <input type='password' name='password'/>
+  </div>
+  <div class="modal-footer">
+   <input type="submit" class="btn btn-primary">
+  </div>
+</div>
+</form>
 Company Deleted

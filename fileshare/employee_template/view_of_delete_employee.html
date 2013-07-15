@@ -1,15 +1,3 @@
-<!-- <form method='post' action='delete_company'>
-<select name='employee_name'>
-{% for obj in a %}
-<option>
-{{obj.employee_id}}
-</option>
-{%endfor%}
-</select>
-<input type='submit'/>
-</form>
-<a href="/mylogout">log out</a>
-<a href="/index">index</a> -->
  {%load bootstrap%}
  {% bootstrap_css %}
 <div class="navbar">
@@ -17,7 +5,13 @@
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class="active span2"><a href="/index">Index</a></li>
-      <li class="active offset12"><a href="/mylogout">Sign out</a></li>
+   <li class="span2 divider-vertical "><a href="/view_of_my_file">view my files</a></li>
+      <li class="span2  divider-vertical "><a href="/view_my_company_file">company files</a></li>
+      <li class="span2 divider-vertical"><a href="/view_of_delete_file">Delete file</a></li>
+      <li class="span2 divider-vertical"><a href="/view_of_upload_file">add file</a></li>
+   
+      <li class="active offset4"><a href="/mylogout">Sign out</a></li>
+
     </ul>
   </div>
 </div>

@@ -1,0 +1,38 @@
+
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="home_page">Home</a>
+    <ul class="nav">
+      <li class="span2"><a href="/index">Index</a></li>
+      <li class="offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+  </div>
+</div>
+<br><br><br>
+<table class="table table-hover">
+	<tr>
+		<th>
+			employees
+		</th>
+		<th></th><th></th>
+	</tr>
+	{%for emp in emps%}
+<tr>
+	<td>
+		{{emp.employee_id}}
+	</td>
+	<form action="delete_employee" method="POST">
+		<td>
+			<input type='hidden' name="employee_name" value={{emp.employee_id}}>
+			<input type='submit' value='delete' class='btn btn-link'/>
+		</td>
+	</form>
+		<td>
+			<a href="/view_of_update_employee/{{emp.employee_id}}">update</a>
+		</td>	
+</tr>
+	{%endfor%}
+</table>
+	<a href="/view_of_create_employee"><input type='submit' class='btn btn-info' value='add employee'></a>

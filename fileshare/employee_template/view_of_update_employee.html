@@ -5,11 +5,11 @@
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class="span2 divider-vertical"><a href="/index">Index</a></li>
-      <li class="offset12"><a href="/mylogout">Sign out</a></li>
+      <li class="offset4"><a href="/mylogout">Sign out</a></li>
     </ul>
   </div>
 </div>
-<form method='get' action='employee_save_update' class="form-horizontal">
+<form method='POST' action='/employee_save_update' class="form-horizontal">
 	<legend>Update Employee Details</legend>
 <div class="control-group">
 	<div class="controls">
@@ -33,6 +33,7 @@
 		<input type='text' class="span2" name='update'>
 	</div>
 </div>
+<input type='hidden' name="employee_name" value={{name}}>
 <div class="control-group">
 	<div class="controls">
 		<input type="submit"/>

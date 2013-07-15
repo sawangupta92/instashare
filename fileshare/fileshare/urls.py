@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^delete_company','sharing.views.delete_company'),
     url(r'^view_of_update_company','sharing.views.view_of_update_company'),
     url(r'^company_save_update','sharing.views.company_save_update'),
+    url(r'^company','sharing.views.company_operations'),
     # url(r'^', include('filer.server.urls')),
 
 ######################## URL OF EMPLOYEE ###############################
@@ -35,7 +36,7 @@ urlpatterns = patterns('',
     url(r'^view_of_delete_employee','sharing.views.view_of_delete_employee'),
     url(r'^delete_employee','sharing.views.delete_employee'),
     url(r'^view_of_create_employee','sharing.views.view_of_create_employee'),
-    url(r'^view_of_update_employee','sharing.views.view_of_update_employee'),
+    url(r'^view_of_update_employee/(?P<name>.*)$','sharing.views.view_of_update_employee'),
     url(r'^employee_save_update','sharing.views.employee_save_update'),
     # url(r'^attachments/',include('attachments.urls')),
 

@@ -4,20 +4,32 @@
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
-		<li class="span2"><a href="/view_of_create_company">create company</a></li>
-		<li class="span2">
-			<a href="/view_of_delete_company">delete company</a>
-		</li>
-		<li class="span2">
-			<a href="/view_of_create_employee">create employee</a>
-		</li>
-		<li class="span2">
-			<a href="/view_of_delete_employee">delete employee </a>
-		</li>
-		<li class="span2">
-			<a href="/index">index</a>
-		</li>
-      <li class="offset4"><a href="/mylogout">Sign out</a></li>
+		<li class="span2"><a href="/company_operations">company</a></li>
+      <li class="offset12"><a href="/mylogout">Sign out</a></li>
+
     </ul>
   </div>
 </div>
+<br><br><br>
+<form action='delete_my_file' method='post'>
+<table class="table table-hover">
+	<tr>
+		<th>employee name</th>
+		<th>file name</th>
+		<th></th>
+		<th></th>
+	</tr>
+		{%for f in files%}
+			<tr>
+				<td>{{f.employee_who_added_file.employee_id.username}}</td>
+				<td>{{f.file_to_upload.name}}</td>
+				<td>
+					<input type='hidden' name='file_to_delete' value={{f.file_to_upload}}>
+					<input type='submit' value='delete' class='btn btn-link'/></td>
+			<td><a href='media/{{f.file_to_upload.name}}'>view</a></td>
+			</tr>
+		{%endfor%}
+</table>
+</form>
+ <a href="/view_of_upload_file"><input type='submit' class='btn btn-info' value='add new file'></a> 
+ <a href="/view_my_company_file"><input type='submit' class='btn btn-info' value='company files'></a>
