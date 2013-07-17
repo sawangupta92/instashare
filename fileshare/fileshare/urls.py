@@ -53,7 +53,8 @@ urlpatterns = patterns('',
     url(r'^view_of_sign_up','sharing.views.view_of_sign_up'),
     url(r'^home_page','sharing.views.home_page'),
     url(r'^employee_already_associated_with_company_fail','sharing.views.employee_already_associated_with_company_fail'),
-
+    (r'^tinymce/', include('tinymce.urls')),
+    (r'^search/', include('haystack.urls')),
 
 ######################## URL OF FILE ###############################
     url(r'^media/(?P<path>.*)$','django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes':True}),
@@ -63,6 +64,7 @@ urlpatterns = patterns('',
     url(r'^view_my_company_file','sharing.views.view_my_company_file'),
     url(r'^delete_my_file','sharing.views.delete_my_file'),
     url(r'^view_of_delete_file','sharing.views.view_of_delete_file'),
+    url(r'^show_file','sharing.views.show_file'),
 
 
     # url(r'^media/')

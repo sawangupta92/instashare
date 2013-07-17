@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render_to_response,redirect,HttpResponse	
 from sharing.models import *
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.contrib.auth.decorators import login_required
@@ -120,7 +120,19 @@ def company_operations(request):
 	pass
 
 #########################################VIEW OF FILE##############################################
-
+def show_file(request):
+	# import mimetypes
+	# import os
+	# mimetypes.init()
+	# file_path="/home/sawan/Desktop/instashare/readme.txt"
+	fsock=open("/home/sawan/Desktop/instashare/readme.txt","rb")
+	f=fsock.readlines()
+	# file_name=os.path.basename(file_path)
+	# mime_type_guess=mimetypes.guess_type(file_name)
+	# response = HttpResponse(fsock, mimetype=mime_type_guess[0])
+	# response['Content-Disposition'] = 'attachment; filename=' + file_name
+	return render_to_response('file/show_file.html',{'f':f})
+	pass
 @login_required
 def view_of_upload_file(request):#logout index delete_file view_my_file view_company_file*
 	return render_to_response('file/view_of_upload_file.html')
@@ -130,9 +142,10 @@ def upload_file(request):#logout index delete_file view_my_file view_company_fil
 	form=file_upload(request.POST, request.FILES)
 	user=User.objects.get(username=request.user)
 	emp=employee.objects.get(employee_id=user)
-	instance=my_file(file_to_upload=request.FILES['document'],employee_who_added_file=emp)
+	a=request.FILES['document']
+	instance=my_file(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'])
 	instance.save()
-	return render_to_response('file/upload_file.html')
+	return render_to_response('file/upload_file.html',{'a':a})
 @login_required
 def view_of_my_file(request):#logout index delete_file view_company_file* add_file
 	a=User.objects.get(username=request.user)

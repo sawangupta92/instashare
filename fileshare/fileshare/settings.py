@@ -1,5 +1,5 @@
 # Django settings for fileshare project.
-
+import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -121,9 +121,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'south',
     'sharing',
     'bootstrapped',
+    'tinymce',
     # 'filer',
     # 'mptt',
     # 'easy_thumbnails',
@@ -136,6 +138,12 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 TEMPLATE_CONTEXT_PROCESSORS = (
     # 'django.core.context_processors.auth',
     'django.core.context_processors.i18n',
