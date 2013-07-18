@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from sharing.models import *
 from django.template import RequestContext
 from django.db import IntegrityError
+from subprocess import CalledProcessError
 # django.contrib.auth.context_processors.auth
 ############################################DECORATORS#########################################
 
@@ -244,3 +245,22 @@ def test1(request):
 	pass
 def fail(request):
 	return render_to_response('index/fail.html',{'r':request})
+################################view of search#######################################
+import subprocess
+def search_process(c_id,query):
+	try:
+		if not subprocess.check_call(["grep","-R","-l", query, "/home/sawan/Desktop/instashare/media/company_%d" %c_id]):
+			search=subprocess.check_output(["grep","-R", "-l", query, "/home/sawan/Desktop/instashare/media/company_%d" %c_id]).split("/home/sawan/Desktop/instashare/")
+			# result=[]
+			# for r in search:
+			# 	result.append(r.split(":")[0])
+			return search
+	except CalledProcessError:
+		return None
+	pass
+def search_result(request):
+	e_id=employee.objects.get(employee_id=User.objects.get(username=request.user))
+	query=request.GET.get("query")
+	result=search_process(e_id.company_id_id,query)
+	return render_to_response('index/search_result.html',{'a':result})
+	pass

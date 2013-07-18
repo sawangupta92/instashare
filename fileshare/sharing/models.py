@@ -39,8 +39,9 @@ class file_upload(forms.Form):
 class my_file(models.Model):
 	employee_who_added_file=models.ForeignKey(employee)
 	def get_upload_path(instance, filename):
+		e=employee.objects.get(id=instance.employee_who_added_file.id)
 		return os.path.join(
-			"user_%d" % instance.employee_who_added_file.id, filename)
+			"company_%d" %e.company_id.id, "user_%d" % instance.employee_who_added_file.id, filename)
 	file_to_upload=models.FileField(upload_to=get_upload_path)
 	file_name=models.CharField(max_length="100")
 class ExtFileField(forms.FileField):

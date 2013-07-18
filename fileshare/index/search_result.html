@@ -1,0 +1,23 @@
+ {%load bootstrap%}
+ {% bootstrap_css %}
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="home_page">Home</a>
+    <ul class="nav">
+		<li class="span2"><a href="/company_operations">company</a></li>
+		<li class="span2"><a href="/index">Index</a></li>
+      <li class="offset10"><a href="/mylogout">Sign out</a></li>
+
+    </ul>
+  </div>
+</div>
+
+<form method="get" action="search_result" class="form-search offset12">
+ <input type="text" class="input-medium search-query" name="query">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+{%for result in a%}
+<a href="{{result}}">
+{{result}}<br>
+</a>
+{%endfor%}

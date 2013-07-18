@@ -14,6 +14,10 @@
  --><a href="media/{{file.file_to_upload}}">{{file.file_to_upload}}</a>
 <br>
 {% endfor %}
+<form method="get" action="search_result" class="form-search offset12">
+ <input type="text" class="input-medium search-query" name="query">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
 <br><br><br>
 <table class="table table-hover" name='file_to_delete'>
   <tr>
