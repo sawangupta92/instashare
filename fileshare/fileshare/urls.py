@@ -68,8 +68,8 @@ urlpatterns = patterns('',
     url(r'^delete_my_file','sharing.views.delete_my_file'),
     url(r'^view_of_delete_file','sharing.views.view_of_delete_file'),
     url(r'^show_file','sharing.views.show_file'),
-
-
+    url(r'^social/', include('socialregistration.urls', namespace = 'socialregistration')),
+    # url(r'^fileshare'),
     # url(r'^media/')
 
     # url(r'^file-picker/',include(file_picker.site.urls)),

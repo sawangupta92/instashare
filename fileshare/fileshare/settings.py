@@ -1,4 +1,5 @@
 # Django settings for fileshare project.
+from rauth import OAuth1Service
 import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -126,6 +127,9 @@ INSTALLED_APPS = (
     'sharing',
     'bootstrapped',
     'tinymce',
+    'socialregistration',
+    'socialregistration.contrib.twitter',
+    'socialregistration.contrib.facebook',
     # 'filer',
     # 'mptt',
     # 'easy_thumbnails',
@@ -144,6 +148,12 @@ INSTALLED_APPS = (
 #         'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
 #     },
 # }
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+        'socialregistration.contrib.facebook.auth.FacebookAuth',
+
+        'socialregistration.contrib.twitter.auth.TwitterAuth',
+)
 TEMPLATE_CONTEXT_PROCESSORS = (
     # 'django.core.context_processors.auth',
     'django.core.context_processors.i18n',
@@ -152,6 +162,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.contrib.auth.context_processors.auth'
 )
+FACEBOOK_APP_ID = '156809224510615'
+FACEBOOK_SECRET_KEY = '3612fc5bb9416cf6e22b1894aef68b32'
+FACEBOOK_REQUEST_PERMISSIONS = ''
+twitter = OAuth1Service(
+    consumer_key='qXmrGK3UflaHcLYD8IUpBQ',
+    consumer_secret='cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24',
+    name='twitter',
+    access_token_url='https://api.twitter.com/oauth/access_token',
+    authorize_url='https://api.twitter.com/oauth/authorize',
+    request_token_url='https://api.twitter.com/oauth/request_token',
+    base_url='https://api.twitter.com/1/')
+TWITTER_CONSUMER_KEY = 'qXmrGK3UflaHcLYD8IUpBQ'
+TWITTER_CONSUMER_SECRET_KEY = 'cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24'
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

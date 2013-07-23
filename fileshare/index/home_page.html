@@ -1,7 +1,16 @@
+<!DOCTYPE HTML>
 {%load bootstrap%}
  {% bootstrap_css %}
 <script type="text/javascript" src="/home/sawan/Desktop/instashare/static/js/jquery.js">
 </script>
+<style type="text/css">
+body .my-modal-width {
+    /* new custom width */
+    width: 750px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    margin-left: -375px;
+}
+</style>
  {% bootstrap_js modal transition %}
 <div class="navbar">
   <div class="navbar-inner">
@@ -9,7 +18,7 @@
     <ul class="nav">
       <li class="span2 divider-vertical"><a href="/index">Index</a></li>
       {% if not user.is_authenticated %}
-        <li class="offset11"><a href="/sign_up">signup</a></li>
+        <li><a data-toggle="modal" href="#signup">sign up</a></li>
         <li ><a data-toggle="modal" href="#myModal">Login</a></li>
       {% else%}
         <li class="offset12"><a href="/mylogout">logout</a></li>
@@ -32,3 +41,38 @@
   </div>
 </div>
 </form>
+<form method='POST' action='sign_up'>
+<div id="signup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="signuplabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="signuplabel">Enter Your Login Detail</h3>
+  </div>
+  <div class="modal-body">
+your name<input type='text' required name= 'e_name' placeholder="your name">
+<div>
+password<input type='password' required name= 'e_password'/ placeholder="password">
+</div>
+<div>
+address<input type='text' name= 'e_address' placeholder="your address"/>
+</div>
+<div>
+contact number<input type='tel' required name= 'e_phone'/ placeholder="your contact number">
+</div>
+<div>
+email id<input type='email' required name= 'e_email_id'/ placeholder="your email id">
+</div>
+<div>
+facebook id<input type='email' name= 'e_fb_id'/ placeholder="facebook address">
+</div>
+<div>
+twitter id<input type='email' name= 'e_tw_id'/ placeholder="twitter address">
+</div>
+</div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <input type="submit" class="btn btn-primary">
+  </div>
+</div>
+        </form>
+<div style="padding-bottom: 24px;">
+          </div>

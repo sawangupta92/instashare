@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
  {%load bootstrap%}
  {% bootstrap_css %}
 <div class="navbar">
@@ -11,10 +12,19 @@
   </div>
 </div>
 <form method= 'POST' action= 'create_employee' class="form-horizontal">
-	{%csrf_token%}
 	<div class="control-group">
 		<div class="controls">
-			<input type='text' required name= 'name' placeholder="name"/>
+			<input type='text' required name= 'f_name' placeholder="First Name"/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='text' name= 'l_name' placeholder="Last Name"/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type='text' required name= 'name' placeholder="User Name"/>
 		</div>
 	</div>
 	<div class="control-group">
@@ -24,7 +34,7 @@
 	</div>
 	<div class="control-group">
 		<div class="controls">
-			<input type='text' required placeholder="company name" name='c_name'>
+			<input type='text' placeholder="company name" name='c_name'>
 		</div>
 	</div>
 	<div class="control-group">

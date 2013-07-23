@@ -12,18 +12,32 @@ from sharing.models import *
 from django.template import RequestContext
 from django.db import IntegrityError
 from subprocess import CalledProcessError
+from rauth import OAuth1Service
+from django.core.paginator import Paginator
+twitter = OAuth1Service(
+    consumer_key='qXmrGK3UflaHcLYD8IUpBQ',
+    consumer_secret='cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24',
+    name='twitter',
+    access_token_url='https://api.twitter.com/oauth/access_token',
+    authorize_url='https://api.twitter.com/oauth/authorize',
+    request_token_url='https://api.twitter.com/oauth/request_token',
+    base_url='https://api.twitter.com/1/')
+TWITTER_CONSUMER_KEY = 'qXmrGK3UflaHcLYD8IUpBQ'
+TWITTER_CONSUMER_SECRET_KEY = 'cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24'
+FACEBOOK_APP_ID = '156809224510615'
+FACEBOOK_SECRET_KEY = '3612fc5bb9416cf6e22b1894aef68b32'
+FACEBOOK_REQUEST_PERMISSIONS = ''
 # django.contrib.auth.context_processors.auth
 ############################################DECORATORS#########################################
-
 class employee_already_associated_with_company(object):
 	def __init__(self, orig_func):
 		self.orig_func = orig_func
 	def __call__(self, request, *args, **kwargs):
 		a=employee.objects.get(employee_id=User.objects.get(username=request.user))
 		if a.company_id==None:
-			return self.orig_func(request, *args, **kwargs)
+			return render_to_response('company_template/view_of_create_company.html')
 		else:
-			return render_to_response('index/employee_already_associated_with_company_fail.html')
+			return self.orig_func(request, *args, **kwargs)
 class admin_decorator_required(object):
 	def __init__(self, orig_func):
 		self.orig_func = orig_func
@@ -41,11 +55,11 @@ def view_of_create_employee(request):#admin decorator logout
 	all_objects=roles.objects.filter()
 	return render_to_response('employee_template/view_of_create_employee.html',{'a':all_objects})
 	pass
-@admin_decorator_required
 @csrf_exempt
+@admin_decorator_required
 def create_employee(request):#admin decorator logout
-	u=User.objects.create_user(username=request.POST.get('name'),password=request.POST.get('password'),email=request.POST.get('email_id'))
-	u_c=User.objects.get(username=request.POST.get('c_name'))
+	u=User.objects.create_user(username=request.POST.get('name'),password=request.POST.get('password'),email=request.POST.get('email_id'),first_name=request.POST.get('f_name'),last_name=request.POST.get('l_name'))
+	u_c=User.objects.get(username=request.user)
 	c=company.objects.get(company_id=u_c)
 	e=employee.objects.create(employee_id=u,company_id=c,address=request.POST.get('address') ,phone_no=request.POST.get('phone'),fb_id=request.POST.get('fb_id'), twitter_id=request.POST.get('tw_id'))
 	r_id=roles.objects.get(role_name=request.POST.get('role','tester'))
@@ -113,11 +127,12 @@ def company_save_update(request):
 	a.save()
 	return render_to_response('company_template/company_save_update.html')
 def company_operations(request):
+	all_objects=roles.objects.filter()
 	# emp=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	# emps=company.objects.get(employee=User.objects.get(username=request.user)).employee_set.filter()
 	e=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	emps=company.objects.get(employee=e).employee_set.filter()
-	return render_to_response('company_template/company.html',{'emps':emps})
+	return render_to_response('company_template/company.html',{'emps':emps,'a':all_objects})
 	pass
 
 #########################################VIEW OF FILE##############################################
@@ -160,7 +175,8 @@ def view_my_company_file(request):#logout index delete_file view_my_file add_fil
 	c=company.objects.get(id=e.company_id_id)
 	emps=employee.objects.filter(company_id=c)
 	files=my_file.objects.filter(employee_who_added_file__in=emps)
-	return render_to_response('file/view_my_company_file.html',{'name':files})
+	pages=Paginator(files,10)
+	return render_to_response('file/view_my_company_file.html',{'name':files, 'pages':pages})
 	pass
 def view_of_delete_file(request):#logout index  view_my_file view_company_file* add_file
 	a=User.objects.get(username=request.user)
@@ -200,15 +216,16 @@ def sign_up(request):
 		r=roles_emp.objects.create(roles_id=roles.objects.get(role_name='super admin'), u_id=e_u)
 		e.save()
 		r.save()
-		return render_to_response('index/sign_up.html')
+		return render_to_response('index/sign_up.html',{'r':request.user})
 		pass
 	except IntegrityError, e:
 		error='oops this name is already taken'
 		return render_to_response('index/view_of_sign_up.html',{'error':error})
 	pass
 def view_of_login(request):
-	return render_to_response('index/view_of_login.html')
-@login_required
+	return render_to_response('index/view_of_login.html',{'r':request.user})
+# @login_required
+@employee_already_associated_with_company
 def index(request):
 	a=User.objects.get(username=request.user)
 	e=employee.objects.get(employee_id=a.id)
@@ -224,7 +241,6 @@ def mylogin(request):
 			a=User.objects.get(username=request.POST.get('username'))
 			e=employee.objects.get(employee_id=a.id)
 			f=my_file.objects.filter(employee_who_added_file=e)
-			# index(request)
 			return render_to_response('index/index.html',{'files':f})
 		else:
 			return render_to_response('index/home_page.html')
@@ -244,16 +260,13 @@ def test1(request):
 	return render_to_response('index/test1.html',{'user':request})
 	pass
 def fail(request):
-	return render_to_response('index/fail.html',{'r':request})
+	return render_to_response('index/fail.html',context_instance=RequestContext(request))
 ################################view of search#######################################
 import subprocess
 def search_process(c_id,query):
 	try:
 		if not subprocess.check_call(["grep","-R","-l", query, "/home/sawan/Desktop/instashare/media/company_%d" %c_id]):
 			search=subprocess.check_output(["grep","-R", "-l", query, "/home/sawan/Desktop/instashare/media/company_%d" %c_id]).split("/home/sawan/Desktop/instashare/")
-			# result=[]
-			# for r in search:
-			# 	result.append(r.split(":")[0])
 			return search
 	except CalledProcessError:
 		return None
