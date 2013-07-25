@@ -1,8 +1,27 @@
 <!DOCTYPE HTML>
+{%load pagination_tags%}
  {%load bootstrap%}
  {% bootstrap_css %}
  <script type="text/javascript" src="/home/sawan/Desktop/instashare/static/js/jquery.js">
 </script>
+   <script type="text/javascript">
+  function validate_length () {
+    q=document.getElementById('len').value;   
+    if (q.length<3) {
+      document.getElementsByName('query')[0].value="";
+      document.getElementsByName('query')[0].placeholder="enter atleast three letters";
+      return false
+    };
+  }
+  function confirm_to_delete() {
+    var r=confirm("Do you really want to delete the company..??");
+    if (r==false){
+      return false
+    }
+    // body...
+  }
+
+  </script>
  {% bootstrap_js modal transition %}
  <style type="text/css">
 body .my-modal-width {
@@ -11,7 +30,11 @@ body .my-modal-width {
     /* must be half of the width, minus scrollbar on the left (30px) */
     margin-left: -375px;
 }
+.table{
+  width: 900px;
+}
  </style>
+ {%autopaginate emps 10%}
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
@@ -21,18 +44,24 @@ body .my-modal-width {
     </ul>
   </div>
 </div>
-
-<form method="get" action="search_result" class="form-search offset12">
- <input type="text" class="input-medium search-query" name="query">
+<form method="get" action="search_result" class="form-search offset12" onsubmit="return validate_length()">
+  <div class="input-append">
+ <input type="text" class="input-medium search-query span3" name="query" id="len">
   <button type="submit" class="btn btn-primary">Search</button>
+</div>
 </form>
 <br><br><br>
-<table class="table table-hover">
-  <tr>
-    <th>
+<table class="table table-hover table-bordered offset2">
+  <tr class="info">
+    <td>
       employees
-    </th>
-    <th></th><th></th>
+    </td>
+    <td>
+      Delete Employee
+    </td>
+    <td>
+    Update
+  </td>
   </tr>
   {%for emp in emps%}
 <tr>
@@ -51,8 +80,9 @@ body .my-modal-width {
 </tr>
   {%endfor%}
 </table>
-  <a href="/view_of_create_employee"><input type='submit' class='btn btn-info' value='add employee'></a>
-
+<div class="text-center">
+{%paginate%}
+</div>
 <form method='POST' action='create_employee'>
 <div id="myModal" class="modal hide fade my-modal-width" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -102,5 +132,6 @@ Role: <select name='role'>
 </div>
         </form>
 <div style="padding-bottom: 24px;">
-            <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Add Employee</a>
+            <a data-toggle="modal" href="#myModal" class="btn btn-info">Add Employee</a>
           </div>
+            <a href="delete_company" onclick="return confirm_to_delete()">Delete Company</a>

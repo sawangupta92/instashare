@@ -92,13 +92,15 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     'django.template.loaders.eggs.Loader',
 )
-
+    
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'pagination.middleware.PaginationMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -127,6 +129,7 @@ INSTALLED_APPS = (
     'sharing',
     'bootstrapped',
     'tinymce',
+    'pagination',
     'socialregistration',
     'socialregistration.contrib.twitter',
     'socialregistration.contrib.facebook',
@@ -160,7 +163,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
-    'django.contrib.auth.context_processors.auth'
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+    "django.core.context_processors.debug",
 )
 FACEBOOK_APP_ID = '156809224510615'
 FACEBOOK_SECRET_KEY = '3612fc5bb9416cf6e22b1894aef68b32'

@@ -1,51 +1,86 @@
 <!DOCTYPE HTML>
+{%load pagination_tags%}
  {%load bootstrap%}
  {% bootstrap_css %}
+ <script type="text/javascript" src="/home/sawan/Desktop/instashare/static/js/jquery.js">
+</script>
+ {% bootstrap_js modal transition %}
+
+   <script type="text/javascript">
+  function validate_length () {
+    q=document.getElementById('len').value;   
+    if (q.length<3) {
+      document.getElementsByName('query')[0].value="";
+      document.getElementsByName('query')[0].placeholder="enter atleast three letters";
+      return false
+    };
+  }
+  </script>
+  <style type="text/css">
+.table{
+  width: 900px;
+}
+</style>
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
-      <li class="span1 divider-vertical "><a href="/index">Index</a></li>
+      <li class="span2 divider-vertical "><a href="/company_operations">Company</a></li>
       <li class="offset12"><a href="/mylogout">Sign out</a></li>
     </ul>
   </div>
 </div>
+
+ {%autopaginate name 10%}
 {% for file in files %}
 <!-- <a href="tinymce/preview/{{file.file_to_upload}}">dd</a>
  --><a href="media/{{file.file_to_upload}}">{{file.file_to_upload}}</a>
 <br>
 {% endfor %}
-<form method="get" action="search_result" class="form-search offset12">
- <input type="text" class="input-medium search-query" name="query">
+
+<form method="get" action="search_result" class="form-search offset12" onsubmit="return validate_length()">
+  <div class="input-append">
+ <input type="text" class="input-medium search-query span3" name="query" id="len">
   <button type="submit" class="btn btn-primary">Search</button>
+</div>
 </form>
 <br><br><br>
-<table class="table table-hover" name='file_to_delete'>
-  <tr>
-    <th>emp name</th>
-    <th>file name</th>
-    <th></th>
+<table class="table table-hover table-bordered offset2" name='file_to_delete'>
+  <tr class="info">
+    <td>emp name</td>
+    <td>file name</td>
+    <td></td>
   </tr>
-    <tr>
+  <tr>
     {%for f in name%}
-      <td>
-          {{f.employee_who_added_file.employee_id.username}}
-      </td>
-        <td>
-
-          {{f.file_name}}
-        </td> 
-              <td>
-              <!-- <a href="tinymce/preview/{{f.file_to_upload}}">jj</a> -->
- <!-- <form action='tinymce/preview/' metho='post'>
-<input type="text" value="{{f.file_to_upload.name}}" name="tinymce-preview">
-<input type="submit"/>
- </form> -->
-
-                <a href='media/{{f.file_to_upload.name}}'>view</a></td>
-
-    </tr>
+    <td>
+    {{f.employee_who_added_file.employee_id.username}}
+    </td>
+    <td>
+      {{f.file_name}}
+    </td> 
+    <td>
+      <div class="text-right">
+      <a href='media/{{f.file_to_upload.name}}'>view</a></td>
+      </div>
+    </td>
+  </tr>
     {%endfor%}
 </table>
-<a href="/view_of_upload_file"><input type='submit' class='btn btn-info' value='add new file'></a> 
- <a href="/index"><input type='submit' class='btn btn-info' value='my files'></a>
+<div class="text-center">
+{%paginate%}
+</div>
+<a data-toggle="modal" href="#filemodal" class="btn btn-info">Upload</a>
+<a href="/index"><input type='submit' class='btn btn-info' value='my files'></a>
+<form method='post' action='upload_file' enctype="multipart/form-data" class="form-horizontal">
+  <div id="filemodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myfilemodal" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myfilemodal">Upload File</h3>
+    </div>
+    <div class="modal-body">
+      <input type='file' name='document'>
+      <input type='submit'>
+    </div>
+  </div>
+</form>

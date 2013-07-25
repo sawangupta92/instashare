@@ -46,7 +46,8 @@ urlpatterns = patterns('',
     url(r'^view_of_logout','sharing.views.view_of_logout'),
     url(r'^view_of_login','sharing.views.view_of_login'),
     url(r'^test','sharing.views.test'),
-    url(r'^test1','sharing.views.test1'),
+    url(r'^newt','sharing.views.newt'),
+    url(r'^save_newt','sharing.views.save_newt'),
     url(r'^index','sharing.views.index'),
     url(r'^fail','sharing.views.fail'),
     url(r'^sign_up','sharing.views.sign_up', name='sign_up'),
@@ -56,7 +57,6 @@ urlpatterns = patterns('',
     # (r'^tinymce/', include('tinymce.urls')),
     # (r'^search/', include('haystack.urls')),
     url(r'^search_result','sharing.views.search_result'),
-    
 
 
 ######################## URL OF FILE ###############################

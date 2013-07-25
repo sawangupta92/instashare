@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
  {%load bootstrap%}
+ {%load pagination_tags%}
  {% bootstrap_css %}
  <script type="text/javascript" src="/home/sawan/Desktop/instashare/static/js/jquery.js">
 </script>
@@ -14,6 +15,9 @@
 	}
 
 </script>
+{%if a%}
+ {%autopaginate a 10%}
+ {%endif%}
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
@@ -32,6 +36,9 @@
 	</div>
 </form>
 {%for result in a%}
-<a href="{{result}}" class="offset1">{{result}}<br><br></a>
+<a href="{{result}}" class="offset1" target="_blank">{{result}}<br><br></a>
 {%endfor%}
+<div class="text-center">
+{%paginate%}
+</div>
 </html>

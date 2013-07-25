@@ -13,7 +13,10 @@ from django.template import RequestContext
 from django.db import IntegrityError
 from subprocess import CalledProcessError
 from rauth import OAuth1Service
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.core.files.uploadedfile import SimpleUploadedFile
+import os
 twitter = OAuth1Service(
     consumer_key='qXmrGK3UflaHcLYD8IUpBQ',
     consumer_secret='cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24',
@@ -110,12 +113,15 @@ def view_of_delete_company(request):#logout add admin login decorator
 	all_objects=company.objects.filter()
 	return render_to_response('company_template/view_of_delete_company.html',{'a':all_objects})
 @csrf_exempt
+@login_required
 @admin_decorator_required
 def delete_company(request):#login also redirect to login page and logout the current user
-	u=User.objects.get(username=request.POST.get('company_name'))
-	a=company.objects.get(company_id=u)
+	# u=User.objects.get(username=request.user)
+	# u=User.objects.get(username=request.POST.get('company_name'))
+	e=employee.objects.get(employee_id=User.objects.get(username=request.user))
+	a=company.objects.get(id=e.company_id_id)
 	a.delete()
-	return render_to_response('company_template/delete_company.html')
+	return render_to_response('index/index.html')
 def view_of_update_company(request):
 	company_object=company()
 	company_fields=company_object.fields_of_company()
@@ -132,7 +138,7 @@ def company_operations(request):
 	# emps=company.objects.get(employee=User.objects.get(username=request.user)).employee_set.filter()
 	e=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	emps=company.objects.get(employee=e).employee_set.filter()
-	return render_to_response('company_template/company.html',{'emps':emps,'a':all_objects})
+	return render_to_response('company_template/company.html',{'emps':emps,'a':all_objects},context_instance=RequestContext(request))
 	pass
 
 #########################################VIEW OF FILE##############################################
@@ -155,13 +161,20 @@ def view_of_upload_file(request):#logout index delete_file view_my_file view_com
 @csrf_exempt
 @login_required
 def upload_file(request):#logout index delete_file view_my_file view_company_file* add_another_file 
-	form=file_upload(request.POST, request.FILES)
-	user=User.objects.get(username=request.user)
-	emp=employee.objects.get(employee_id=user)
-	a=request.FILES['document']
-	instance=my_file(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'])
-	instance.save()
-	return render_to_response('file/upload_file.html',{'a':a})
+	try:
+		form=file_upload(request.POST, request.FILES)
+		user=User.objects.get(username=request.user)
+		emp=employee.objects.get(employee_id=user)
+		a=request.FILES['document']
+		t = ExtFileField(ext_whitelist=(".py", ".txt"))
+		t.clean(SimpleUploadedFile(a.name,'Some File Content'))
+		instance=my_file(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'])
+		instance.save()
+		return redirect(index)
+		# return render_to_response('index/index.html')
+		pass
+	except ValidationError, e:
+		return render_to_response('index/test.html')
 @login_required
 def view_of_my_file(request):#logout index delete_file view_company_file* add_file
 	a=User.objects.get(username=request.user)
@@ -176,7 +189,7 @@ def view_my_company_file(request):#logout index delete_file view_my_file add_fil
 	emps=employee.objects.filter(company_id=c)
 	files=my_file.objects.filter(employee_who_added_file__in=emps)
 	pages=Paginator(files,10)
-	return render_to_response('file/view_my_company_file.html',{'name':files, 'pages':pages})
+	return render_to_response('file/view_my_company_file.html',{'name':files, 'pages':pages.object_list, 'p':list(files)},context_instance=RequestContext(request))
 	pass
 def view_of_delete_file(request):#logout index  view_my_file view_company_file* add_file
 	a=User.objects.get(username=request.user)
@@ -189,7 +202,8 @@ def delete_my_file(request):#logout index delete_file view_my_file view_company_
 	myfile=request.POST.get('file_to_delete')
 	f=my_file.objects.get(file_to_upload=myfile)
 	f.delete()
-	return render_to_response('file/delete_my_file.html',{'file':myfile})
+	return redirect(index)
+	# return render_to_response('file/delete_my_file.html',{'file':myfile})
 	pass
 
 ##########################################VIEW OF INDEX############################################
@@ -216,7 +230,9 @@ def sign_up(request):
 		r=roles_emp.objects.create(roles_id=roles.objects.get(role_name='super admin'), u_id=e_u)
 		e.save()
 		r.save()
-		return render_to_response('index/sign_up.html',{'r':request.user})
+		user = authenticate(username=request.POST.get('e_name'), password=request.POST.get('e_password'))
+		login(request, user)
+		return render_to_response('company_template/view_of_create_company.html',{'r':request.user})
 		pass
 	except IntegrityError, e:
 		error='oops this name is already taken'
@@ -224,13 +240,13 @@ def sign_up(request):
 	pass
 def view_of_login(request):
 	return render_to_response('index/view_of_login.html',{'r':request.user})
-# @login_required
+@login_required
 @employee_already_associated_with_company
 def index(request):
 	a=User.objects.get(username=request.user)
 	e=employee.objects.get(employee_id=a.id)
 	f=my_file.objects.filter(employee_who_added_file=e)
-	return render_to_response('index/index.html',{'files':f})
+	return render_to_response('index/index.html',{'files':f},context_instance=RequestContext(request))
 @csrf_exempt
 def mylogin(request):
 	user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
@@ -241,6 +257,7 @@ def mylogin(request):
 			a=User.objects.get(username=request.POST.get('username'))
 			e=employee.objects.get(employee_id=a.id)
 			f=my_file.objects.filter(employee_who_added_file=e)
+			return redirect(index)
 			return render_to_response('index/index.html',{'files':f})
 		else:
 			return render_to_response('index/home_page.html')
@@ -254,11 +271,20 @@ def mylogout(request):
 # @admin_decorator_required
 @csrf_exempt
 def test(request):
-	return render_to_response('index/test.html',{'user':request.user})
+	return render_to_response('index/test.html',{'user':request})
 	pass
-def test1(request):
-	return render_to_response('index/test1.html',{'user':request})
+def newt(request):
+	return render_to_response('index/newt.html')
 	pass
+@csrf_exempt
+def save_newt(request):
+	s=request.POST.get('f_name')
+	f=os.mkdir(s)
+	user=User.objects.get(username=request.user)
+	emp=employee.objects.get(employee_id=user)		
+	instance=my_file(file_to_upload=f,employee_who_added_file=emp, file_name=s)
+	instance.save()
+	return render_to_response('index/save_newt.html')
 def fail(request):
 	return render_to_response('index/fail.html',context_instance=RequestContext(request))
 ################################view of search#######################################
@@ -275,5 +301,5 @@ def search_result(request):
 	e_id=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	query=request.GET.get("query")
 	result=search_process(e_id.company_id_id,query)
-	return render_to_response('index/search_result.html',{'a':result})
+	return render_to_response('index/search_result.html',{'a':result},context_instance=RequestContext(request))
 	pass

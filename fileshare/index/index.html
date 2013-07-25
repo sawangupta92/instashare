@@ -1,6 +1,10 @@
 <!DOCTYPE HTML>
  {%load bootstrap%}
+{%load pagination_tags%}
  {% bootstrap_css %}
+ <script type="text/javascript" src="/home/sawan/Desktop/instashare/static/js/jquery.js">
+</script>
+ {% bootstrap_js modal transition %}
   <script type="text/javascript">
  	function validate_length () {
 		q=document.getElementById('len').value; 	
@@ -11,13 +15,18 @@
 		};
 	}
 </script>
+<style type="text/css">
+.table{
+	width: 900px;
+}
+</style>
+{%autopaginate files 10%}
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
 		<li class="span2"><a href="/company_operations">company</a></li>
       <li class="offset12"><a href="/mylogout">Sign out</a></li>
-
     </ul>
   </div>
 </div>
@@ -29,25 +38,43 @@
 </form>
 <br><br><br>
 <form action='delete_my_file' method='post'>
-<table class="table table-hover">
-	<tr>
-		<th>employee name</th>
-		<th>file name</th>
-		<th></th>
+<table class="table table-hover table-bordered offset2">
+	<tr class="info">
+		<td>employee name</td>
+		<td>file name</td>
+		<td></td>
 
 	</tr>
+
 		{%for f in files%}
 			<tr>
 				<td>{{f.employee_who_added_file.employee_id.username}}</td>
 				<td>{{f.file_name}}</td>
 				<td>
+				<div class="text-right">
 					<a href='media/{{f.file_to_upload.name}}' target='_blank'>view</a>
 					<input type='hidden' name='file_to_delete' value={{f.file_to_upload}}>
 					<input type='submit' value='delete' class='btn btn-link'/>
+				</div>
 				</td>
 			</tr>
 		{%endfor%}
 </table>
+<div class="text-center">
+{%paginate%}
+</div>
 </form>
- <a href="/view_of_upload_file"><input type='submit' class='btn btn-info' value='add new file'></a> 
- <a href="/view_my_company_file"><input type='submit' class='btn btn-info' value='company files'></a>
+<a data-toggle="modal" href="#filemodal" class="btn btn-info">Upload</a>
+<a href="/view_my_company_file"><input type='submit' class='btn btn-info' value='company files'></a>
+<form method='post' action='upload_file' enctype="multipart/form-data" class="form-horizontal">
+	<div id="filemodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myfilemodal" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myfilemodal">Upload File</h3>
+  </div>
+  <div class="modal-body">
+  	<input type='file' name='document'>
+    <input type='submit'>
+</div>
+</div>
+        </form>

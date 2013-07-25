@@ -18,7 +18,7 @@ body .my-modal-width {
     <ul class="nav">
       <li class="span2 divider-vertical"><a href="/index">Index</a></li>
       {% if not user.is_authenticated %}
-        <li><a data-toggle="modal" href="#signup">sign up</a></li>
+        <li><a class="offset11" data-toggle="modal" href="#signup">sign up</a></li>
         <li ><a data-toggle="modal" href="#myModal">Login</a></li>
       {% else%}
         <li class="offset12"><a href="/mylogout">logout</a></li>
