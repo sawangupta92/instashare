@@ -62,11 +62,11 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '/home/sawan/Desktop/instashare/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/home/sawan/Desktop/instashare/static/'
+STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -104,7 +104,8 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
-
+TINYMCE_JS_URL = "/home/sawan/Desktop/instashare/fileshare/tiny_mce/tiny_mce.js"
+TINYMCE_JS_ROOT="/home/sawan/Desktop/instashare/fileshare/tiny_mce"
 ROOT_URLCONF = 'fileshare.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.

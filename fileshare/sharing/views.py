@@ -1,3 +1,5 @@
+# a=subprocess.Popen(('find'), stdout=subprocess.PIPE)
+# >>> o=subprocess.check_output(('grep','man'),stdin=a.stdout)
 from django.core.files.base import ContentFile
 from django.core.files import File
 from django.contrib.auth import authenticate, login
@@ -282,7 +284,7 @@ def save_newt(request):
 	f=os.mkdir(s)
 	user=User.objects.get(username=request.user)
 	emp=employee.objects.get(employee_id=user)		
-	instance=my_file(file_to_upload=f,employee_who_added_file=emp, file_name=s)
+	instance=my_file(file_to_upload=f,employee_who_added_file= emp, file_name=s)
 	instance.save()
 	return render_to_response('index/save_newt.html')
 def fail(request):
