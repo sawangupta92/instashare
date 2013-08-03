@@ -1,6 +1,21 @@
 <!DOCTYPE HTML>
  {%load bootstrap%}
  {% bootstrap_css %}
+{% load dajaxice_templatetags %}
+{% dajaxice_js_import %}
+<script type="text/javascript" src="static/js/jquery.js">
+</script>
+<script type="text/javascript">
+function my_js_callback(data){
+	if (data.message==null){
+		document.getElementById('text').value=''
+		document.getElementById('text').placeholder='sorry this name is not available'
+	}
+	else{
+		alert(data.message);
+	}
+}
+</script>
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
@@ -19,6 +34,7 @@
 		</div>
 		<div class="control-group">
 			<div class="controls">
+				<input type="text" id="text" required onfocusout="Dajaxice.sharing.sayhello(my_js_callback, {'text':$('#text').val()})">
 				<input type='text' required name= 'e_name' placeholder="your name">
 			</div>
 		</div>

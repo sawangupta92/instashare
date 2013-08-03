@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
@@ -22,6 +25,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin: 
     # url(r'^admin/', include(admin.site.urls)),
 ######################## URL OF COMPANY ###############################
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     url(r'^view_of_create_company','sharing.views.view_of_create_company'),
     url(r'^view_of_delete_company','sharing.views.view_of_delete_company'),
     url(r'^create_company','sharing.views.create_company'),
@@ -75,3 +79,4 @@ urlpatterns = patterns('',
     # url(r'^file-picker/',include(file_picker.site.urls)),
     # http://stackoverflow.com/questions/1539697/can-i-filter-on-request-user-when-using-django-generic-views
 )
+urlpatterns += staticfiles_urlpatterns()

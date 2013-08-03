@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+import json
 from django.shortcuts import render_to_response,redirect,HttpResponse	
 from sharing.models import *
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -273,8 +274,9 @@ def mylogout(request):
 # @admin_decorator_required
 @csrf_exempt
 def test(request):
-	return render_to_response('index/test.html',{'user':request})
-	pass
+	json_data = json.dumps({"HTTPRESPONSE":1})
+	return HttpResponse(json_data, mimetype="application/json")
+	# return render_to_response
 def newt(request):
 	return render_to_response('index/newt.html')
 	pass

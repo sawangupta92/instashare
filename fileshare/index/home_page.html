@@ -1,7 +1,23 @@
 <!DOCTYPE HTML>
 {%load bootstrap%}
  {% bootstrap_css %}
-<script type="text/javascript" src="/home/sawan/Desktop/instashare/static/js/jquery.js">
+ {% load dajaxice_templatetags %}
+{% dajaxice_js_import %}
+<script type="text/javascript" src="static/js/jquery.js">
+</script>
+<script type="text/javascript">
+function my_js_callback(data){
+  // alert(data.message)
+  if (data.message==null){
+    document.getElementById('msg').innerHTML=''
+    document.getElementById('text').style.backgroundColor='#FFFFFF'
+      }
+  else{
+        document.getElementById('text').value=''
+    document.getElementById('text').style.backgroundColor='#E1CA46'
+    document.getElementById('msg').innerHTML='This username is already taken'
+  }
+}
 </script>
 <style type="text/css">
 body .my-modal-width {
@@ -45,10 +61,11 @@ body .my-modal-width {
 <div id="signup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="signuplabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="signuplabel">Enter Your Login Detail</h3>
+    <h3 id="signuplabel">Enter Your Detail</h3>
   </div>
   <div class="modal-body">
-your name<input type='text' required name= 'e_name' placeholder="your name">
+<p id='msg' class='text-warning'></p>
+your name<input type='text' id='text' required onfocusout="Dajaxice.sharing.sayhello(my_js_callback, {'text':$('#text').val()})" name= 'e_name' placeholder="your name">
 <div>
 password<input type='password' required name= 'e_password'/ placeholder="password">
 </div>

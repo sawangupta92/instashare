@@ -1,5 +1,13 @@
 <!DOCTYPE HTML>
-{%load twitter%}
-{%twitter_button%}
-{%load facebook%}
-{%facebook_button%}
+{% load dajaxice_templatetags %}
+{% dajaxice_js_import %}
+<script type="text/javascript" src="static/js/jquery.js">
+</script>
+<script type="text/javascript">
+function my_js_callback(data){
+    alert(data.message);
+}
+</script>
+<!-- <input type="text" onfocusout="Dajaxice.sharing.sayhello(my_js_callback)"/> -->
+<input type="text" id="text" onfocusout="Dajaxice.sharing.sayhello(my_js_callback, {'text':$('#text').val()})">
+<input type="button" onclick="Dajaxice.sharing.sayhello(my_js_callback, {'text':$('#text').val()})"/>

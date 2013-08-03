@@ -1,6 +1,24 @@
 <!DOCTYPE HTML>
  {%load bootstrap%}
  {% bootstrap_css %}
+  {% load dajaxice_templatetags %}
+{% dajaxice_js_import %}
+<script type="text/javascript" src="static/js/jquery.js">
+</script>
+<script type="text/javascript">
+function my_js_callback(data){
+  // alert(data.message)
+  if (data.message==null){
+    document.getElementById('msg').innerHTML=''
+    document.getElementById('text').style.backgroundColor='#FFFFFF'
+      }
+  else{
+        document.getElementById('text').value=''
+    document.getElementById('text').style.backgroundColor='#E1CA46'
+    document.getElementById('msg').innerHTML='This username is already taken'
+  }
+}
+</script>
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
@@ -19,7 +37,8 @@
 		</div>
 		<div class="control-group">
 			<div class="controls">
-				<input type='text' required name='name' placeholder="username">
+				<p id='msg' class='text-warning'></p>
+				<input type='text' required name='name'  id='text' required onfocusout="Dajaxice.sharing.sayhello(my_js_callback, {'text':$('#text').val()})" placeholder="username">
 			</div>
 		</div>
 		<div class="control-group">

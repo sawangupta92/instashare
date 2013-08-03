@@ -80,6 +80,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'dajaxice.finders.DajaxiceFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -134,6 +135,7 @@ INSTALLED_APPS = (
     'socialregistration',
     'socialregistration.contrib.twitter',
     'socialregistration.contrib.facebook',
+    'dajaxice'
     # 'filer',
     # 'mptt',
     # 'easy_thumbnails',
@@ -162,6 +164,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # 'django.core.context_processors.auth',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'django.contrib.auth.context_processors.auth',
