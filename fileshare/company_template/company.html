@@ -44,9 +44,15 @@ body .my-modal-width {
     </ul>
   </div>
 </div>
-<form method="get" action="search_result" class="form-search offset12" onsubmit="return validate_length()">
-  <div class="input-append">
- <input type="text" class="input-medium search-query span3" name="query" id="len">
+<form method="get" action="search_result" class="form-search offset11" onsubmit="return validate_length()">
+  <div class="input-prepend input-append">
+    <select class='span1' name='search_option'>
+      <option>My</option>
+      <option>Public</option>
+      <option>Private</option>
+      <option>Company</option>
+    </select>
+    <input type="text" class="input-medium search-query span3" name="query" id="len">
   <button type="submit" class="btn btn-primary">Search</button>
 </div>
 </form>

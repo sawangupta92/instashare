@@ -130,12 +130,14 @@ INSTALLED_APPS = (
     'south',
     'sharing',
     'bootstrapped',
-    'tinymce',
+    # 'tinymce',
     'pagination',
     'socialregistration',
     'socialregistration.contrib.twitter',
     'socialregistration.contrib.facebook',
-    'dajaxice'
+    'dajaxice',
+    'softdelete',
+    'django_wysiwyg',
     # 'filer',
     # 'mptt',
     # 'easy_thumbnails',
@@ -154,6 +156,8 @@ INSTALLED_APPS = (
 #         'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
 #     },
 # }
+# DJANGO_WYSIWYG_FLAVOR='tinymce'
+# DJANGO_WYSIWYG_MEDIA_URL='/home/sawan/Desktop/instashare/media'+'tinymce/'
 AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
         'socialregistration.contrib.facebook.auth.FacebookAuth',

@@ -30,7 +30,13 @@
   </div>
 </div>
 <form method="get" action="search_result" class="form-search offset2" onsubmit="return validate_length()">
-	<div class="input-append">
+	<div class="input-prepend input-append">
+	<select class='span1' name='search_option'>
+		<option>My</option>
+		<option>Public</option>
+		<option>Private</option>
+		<option>Company</option>
+	</select>
  <input type="text" class="input-medium search-query span6" name="query" id="len">
  <button type="submit" class="btn btn-primary">Search</button>
 	</div>
@@ -40,5 +46,6 @@
 {%endfor%}
 <div class="text-center">
 {%paginate%}
+{{s}}
 </div>
 </html>

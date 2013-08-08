@@ -7,6 +7,19 @@ var Dajaxice = {
     
 
     
+    sharing: {
+    
+    sayhello: function(callback_function, argv, custom_settings){
+        return Dajaxice.call('sharing.sayhello', 'POST', callback_function, argv, custom_settings);
+    }
+
+
+    
+    
+    }
+    
+,
+    
 
     get_cookie: function(name)
     {

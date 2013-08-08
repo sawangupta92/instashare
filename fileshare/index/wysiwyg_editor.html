@@ -1,0 +1,9 @@
+ {%load bootstrap%}
+ {% bootstrap_css %}
+{%load wysiwyg%}
+{%wysiwyg_setup%}
+{%wysiwyg_editor 'sawan'%}
+<textarea id='sawan'><pre>{{a}}</pre></textarea>
+{%if user == employee_who_added_file%}<br>
+<input type="submit" class="btn btn-primary" value='save changes'>
+{%endif%}

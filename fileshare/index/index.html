@@ -5,7 +5,7 @@
  
  <script type="text/javascript" src="static/js/jquery.js">
 </script>
- {% bootstrap_js modal transition %}
+ {% bootstrap_js modal transition dropdown %}
   <script type="text/javascript">
  	function validate_length () {
 		q=document.getElementById('len').value; 	
@@ -17,7 +17,7 @@
 	}
 </script>
 <style type="text/css">
-.table{
+.details{
 	width: 900px;
 }
 </style>
@@ -31,29 +31,36 @@
     </ul>
   </div>
 </div>
-<form method="get" action="search_result" class="form-search offset12" onsubmit="return validate_length()">
-	<div class="input-append">
- <input type="text" class="input-medium search-query span3" name="query" id="len">
+<form method="get" action="search_result" class="form-search offset11" onsubmit="return validate_length()">
+	<div class="input-prepend input-append">
+		<select class='span1' name='search_option'>
+			<option>My</option>
+			<option>Public</option>
+			<option>Private</option>
+			<option>Company</option>
+		</select>
+<input type="text" class="input-medium search-query span3" name="query" id="len">
   <button type="submit" class="btn btn-primary">Search</button>
 </div>
 </form>
 <br><br><br>
 <form action='delete_my_file' method='post'>
-<table class="table table-hover table-bordered offset2">
+<table class="table table-hover table-bordered offset2 details">
 	<tr class="info">
 		<td>employee name</td>
 		<td>file name</td>
+		<td>Access</td>
 		<td></td>
-
 	</tr>
-
 		{%for f in files%}
 			<tr>
 				<td>{{f.employee_who_added_file.employee_id.username}}</td>
 				<td>{{f.file_name}}</td>
+				<td>{{f.access}}</td>
 				<td>
 				<div class="text-right">
 					<a href='media/{{f.file_to_upload.name}}' target='_blank'>view</a>
+					<a href='wysiwyg_editor/{{f.id}}' target='_blank'>view</a>
 					<input type='hidden' name='file_to_delete' value={{f.file_to_upload}}>
 					<input type='submit' value='delete' class='btn btn-link'/>
 				</div>
@@ -64,6 +71,7 @@
 <div class="text-center">
 {%paginate%}
 </div>
+
 </form>
 <a data-toggle="modal" href="#filemodal" class="btn btn-info">Upload</a>
 <a href="/view_my_company_file"><input type='submit' class='btn btn-info' value='company files'></a>
@@ -75,6 +83,11 @@
   </div>
   <div class="modal-body">
   	<input type='file' name='document'>
+  	<select name='access'>
+  		<option>PUBLIC</option>
+  		<option>PRIVATE</option>
+  		<option>COMPANY</option>
+  	</select>
     <input type='submit'>
 </div>
 </div>

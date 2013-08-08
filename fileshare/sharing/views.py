@@ -1,5 +1,6 @@
 # a=subprocess.Popen(('find'), stdout=subprocess.PIPE)
 # >>> o=subprocess.check_output(('grep','man'),stdin=a.stdout)
+# cd /home/sawan/Desktop/instashare| find -name PRIVATE -exec grep -R -Hn import {} \;
 from django.core.files.base import ContentFile
 from django.core.files import File
 from django.contrib.auth import authenticate, login
@@ -18,6 +19,7 @@ from subprocess import CalledProcessError
 from rauth import OAuth1Service
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist 
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 twitter = OAuth1Service(
@@ -171,10 +173,8 @@ def upload_file(request):#logout index delete_file view_my_file view_company_fil
 		a=request.FILES['document']
 		t = ExtFileField(ext_whitelist=(".py", ".txt"))
 		t.clean(SimpleUploadedFile(a.name,'Some File Content'))
-		instance=my_file(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'])
-		instance.save()
+		instance=my_file.objects.create(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'], access=request.POST.get('access','PUBLIC'))
 		return redirect(index)
-		# return render_to_response('index/index.html')
 		pass
 	except ValidationError, e:
 		return render_to_response('index/test.html')
@@ -204,6 +204,7 @@ def view_of_delete_file(request):#logout index  view_my_file view_company_file* 
 def delete_my_file(request):#logout index delete_file view_my_file view_company_file* add_file
 	myfile=request.POST.get('file_to_delete')
 	f=my_file.objects.get(file_to_upload=myfile)
+	f.file_to_upload.delete()
 	f.delete()
 	return redirect(index)
 	# return render_to_response('file/delete_my_file.html',{'file':myfile})
@@ -277,8 +278,13 @@ def test(request):
 	json_data = json.dumps({"HTTPRESPONSE":1})
 	return HttpResponse(json_data, mimetype="application/json")
 	# return render_to_response
-def newt(request):
-	return render_to_response('index/newt.html')
+def wysiwyg_editor(request,path):
+	full_file=my_file.objects.get(id=path)
+	file_content=full_file.file_to_upload.readlines()
+	b=''
+	for i in file_content.__iter__():
+		b=b+i
+	return render_to_response('index/wysiwyg_editor.html',{'a':b, 'user':request.user,'employee_who_added_file':User.objects.get(id=full_file.employee_who_added_file.employee_id_id)})
 	pass
 @csrf_exempt
 def save_newt(request):
@@ -293,10 +299,11 @@ def fail(request):
 	return render_to_response('index/fail.html',context_instance=RequestContext(request))
 ################################view of search#######################################
 import subprocess
-def search_process(c_id,query):
+def my_search_process(c_id,query,e_id):
 	try:
-		if not subprocess.check_call(["grep","-R","-l", query, "/home/sawan/Desktop/instashare/media/company_%d" %c_id]):
-			search=subprocess.check_output(["grep","-R", "-l", query, "/home/sawan/Desktop/instashare/media/company_%d" %c_id]).split("/home/sawan/Desktop/instashare/")
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id)
+		if not subprocess.check_call(["grep","-R","-l", query,a]):
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
 			return search
 	except CalledProcessError:
 		return None
@@ -304,6 +311,49 @@ def search_process(c_id,query):
 def search_result(request):
 	e_id=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	query=request.GET.get("query")
-	result=search_process(e_id.company_id_id,query)
-	return render_to_response('index/search_result.html',{'a':result},context_instance=RequestContext(request))
+	s=request.GET.get("search_option")
+	result=where_to_Search(request)
+	# result=search_process(e_id.company_id_id,query)
+	return render_to_response('index/search_result.html',{'a':result, 's':s},context_instance=RequestContext(request))
+	pass
+def where_to_Search(request):
+	e=employee.objects.get(employee_id=User.objects.get(username=request.user))
+	query=request.GET.get("query")
+	s=request.GET.get("search_option")
+	result=9
+	if s=='My':
+		result=my_search_process(e.company_id_id,query,e.id)
+	elif s=='Private':
+		result=private_search_process(e.company_id_id,query,e.id)
+		pass
+	elif s=='Company':
+		result=company_search_process(e.company_id_id,query,e.id)
+	else:
+		result=public_search_process(query)
+	return result
+	pass
+def private_search_process(c_id,query,e_id):
+	try:
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id,"PRIVATE")
+		if not subprocess.check_call(["grep","-R","-l", query,a]):
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
+			return search
+	except CalledProcessError:
+		return None
+def company_search_process(c_id,query,e_id):
+	try:
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id,"COMPANY")
+		if not subprocess.check_call(["grep","-R","-l", query,a]):
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
+			return search
+	except CalledProcessError:
+		return None
+def public_search_process(query):
+	try:
+		os.chdir('/home/sawan/Desktop/instashare/')
+		if not subprocess.check_call(('find','-name','PUBLIC','-exec','grep','-R','-Hn',query,'{}',';')):
+			search=subprocess.check_output(['find', '-name', 'PUBLIC', '-exec', 'grep', '-R','-l', '-Hn', query, '{}', ';']).split("./")
+			return search
+	except CalledProcessError:
+		return None
 	pass
