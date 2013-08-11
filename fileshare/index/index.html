@@ -59,7 +59,6 @@
 				<td>{{f.access}}</td>
 				<td>
 				<div class="text-right">
-					<a href='media/{{f.file_to_upload.name}}' target='_blank'>view</a>
 					<a href='wysiwyg_editor/{{f.id}}' target='_blank'>view</a>
 					<input type='hidden' name='file_to_delete' value={{f.file_to_upload}}>
 					<input type='submit' value='delete' class='btn btn-link'/>
@@ -75,6 +74,7 @@
 </form>
 <a data-toggle="modal" href="#filemodal" class="btn btn-info">Upload</a>
 <a href="/view_my_company_file"><input type='submit' class='btn btn-info' value='company files'></a>
+<!-- <a href="/create_file"><input type='submit' class='btn btn-info' value='create files'></a> -->
 <form method='post' action='upload_file' enctype="multipart/form-data" class="form-horizontal">
 	<div id="filemodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myfilemodal" aria-hidden="true">
   <div class="modal-header">

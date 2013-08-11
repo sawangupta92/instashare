@@ -1,9 +1,13 @@
- {%load bootstrap%}
- {% bootstrap_css %}
+{%load bootstrap%}
 {%load wysiwyg%}
+{% bootstrap_css %}
 {%wysiwyg_setup%}
 {%wysiwyg_editor 'sawan'%}
-<textarea id='sawan'><pre>{{a}}</pre></textarea>
+<form action='/update_file' method='POST'>
+<textarea id='sawan' name='file_content'><pre>{{a}}</pre></textarea>
 {%if user == employee_who_added_file%}<br>
+<input type='hidden' value='{{file_path}}' name='file_path'/>
+<input type='hidden' value='{{file_id}}' name='file_id'/>
 <input type="submit" class="btn btn-primary" value='save changes'>
 {%endif%}
+</form>

@@ -1,0 +1,16 @@
+{%load bootstrap%}
+{%load wysiwyg%}
+{% bootstrap_css %}
+{%wysiwyg_setup%}
+{%wysiwyg_editor 'sawan'%}
+<form action='create_file' method='POST'>
+<input type='text' name='file_path'><br>
+<textarea id='sawan' name='file_content'></textarea>
+  	<select name='access'>
+  		<option>PUBLIC</option>
+  		<option>PRIVATE</option>
+  		<option>COMPANY</option>
+  	</select>
+
+<input type="submit" class="btn btn-primary" value='create file'>
+</form>

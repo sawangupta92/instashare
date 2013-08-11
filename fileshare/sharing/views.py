@@ -209,7 +209,43 @@ def delete_my_file(request):#logout index delete_file view_my_file view_company_
 	return redirect(index)
 	# return render_to_response('file/delete_my_file.html',{'file':myfile})
 	pass
+def wysiwyg_editor(request, path):
+	# -- check which file.
+	# if()
+	full_file=my_file.objects.get(id=path)
+	file_content=full_file.file_to_upload.readlines()
+	b=''
+	for i in file_content.__iter__():
+		b=b+i
+	return render_to_response('index/wysiwyg_editor.html',{'a':b, 'user':request.user,'employee_who_added_file':User.objects.get(id=full_file.employee_who_added_file.employee_id_id), 'file_path':full_file.file_to_upload.path,'file_id':full_file.id})
+	pass
+def view_of_create_file(request):
+	return render_to_response('file/view_of_create_file.html')
+@csrf_exempt
+def create_file(request):
+	file_content=request.POST.get('file_content')
+	file_path=request.POST.get('file_path')
+	path=request.POST.get('file_id')
+	access=request.POST.get('access')
+	u=User.objects.get(username=request.user)
+	e=employee.objects.get(employee_id=u.id)
+	f=file(file_path,'a')
+	f.write(file_content)
+	instance=my_file.objects.create(file_to_upload=f,employee_who_added_file=e, file_name=file_path, access=access)
 
+	# return wysiwyg_editor(request,path)
+	# return redirect(wysiwyg_editor(request,path))
+	return render_to_response('file/create_file.html')
+@csrf_exempt
+def update_file(request):
+	file_content=request.POST.get('file_content')
+	file_path=request.POST.get('file_path')
+	path=request.POST.get('file_id')
+	f=file(file_path,'rw+')
+	f.write(file_content)
+	# return wysiwyg_editor(request,path)
+	# return redirect(wysiwyg_editor(request,path))
+	return render_to_response('file/update_file.html',{'file_path':file_path})
 ##########################################VIEW OF INDEX############################################
 # @csrf_protect
 def employee_already_associated_with_company_fail(request):
@@ -278,14 +314,6 @@ def test(request):
 	json_data = json.dumps({"HTTPRESPONSE":1})
 	return HttpResponse(json_data, mimetype="application/json")
 	# return render_to_response
-def wysiwyg_editor(request,path):
-	full_file=my_file.objects.get(id=path)
-	file_content=full_file.file_to_upload.readlines()
-	b=''
-	for i in file_content.__iter__():
-		b=b+i
-	return render_to_response('index/wysiwyg_editor.html',{'a':b, 'user':request.user,'employee_who_added_file':User.objects.get(id=full_file.employee_who_added_file.employee_id_id)})
-	pass
 @csrf_exempt
 def save_newt(request):
 	s=request.POST.get('f_name')
