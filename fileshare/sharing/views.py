@@ -8,6 +8,7 @@ from django.core.context_processors import csrf
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 import json
+from django.db.models import Q
 from django.shortcuts import render_to_response,redirect,HttpResponse	
 from sharing.models import *
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -190,7 +191,8 @@ def view_my_company_file(request):#logout index delete_file view_my_file add_fil
 	e=employee.objects.get(employee_id=a.id)
 	c=company.objects.get(id=e.company_id_id)
 	emps=employee.objects.filter(company_id=c)
-	files=my_file.objects.filter(employee_who_added_file__in=emps)
+	files=my_file.objects.filter(Q(employee_who_added_file__in=emps)&Q(access='COMPANY'))
+	# files=my_file.objects.filter(Q(access='COMPANY')|Q(access='PUBLIC'))
 	pages=Paginator(files,10)
 	return render_to_response('file/view_my_company_file.html',{'name':files, 'pages':pages.object_list, 'p':list(files)},context_instance=RequestContext(request))
 	pass
@@ -209,15 +211,35 @@ def delete_my_file(request):#logout index delete_file view_my_file view_company_
 	return redirect(index)
 	# return render_to_response('file/delete_my_file.html',{'file':myfile})
 	pass
-def wysiwyg_editor(request, path):
+def file_access_validator(request,access,a):
+	if access=='PUBLIC':
+		return True
+		pass
+	elif access=='COMPANY':
+		if employee.objects.get(employee_id=User.objects.get(username=request.user)).company_id_id==employee.objects.get(id=a.employee_who_added_file_id).company_id_id:
+			return True
+		else:
+			return False
+	else:
+		if employee.objects.get(employee_id=User.objects.get(username=request.user))==employee.objects.get(id=a.employee_who_added_file_id):
+			return True
+		else:
+			return False
+	pass
+# sabse pehle file ka access check kar if public no problem if company check kar ki jo user h vo usi company ka h ya nhi else private ke liye dekh ki file ussi user ne upload kri h naa
+def wysiwyg_editor(request, path): 
 	# -- check which file.
 	# if()
 	full_file=my_file.objects.get(id=path)
-	file_content=full_file.file_to_upload.readlines()
-	b=''
-	for i in file_content.__iter__():
-		b=b+i
-	return render_to_response('index/wysiwyg_editor.html',{'a':b, 'user':request.user,'employee_who_added_file':User.objects.get(id=full_file.employee_who_added_file.employee_id_id), 'file_path':full_file.file_to_upload.path,'file_id':full_file.id})
+	val=file_access_validator(request,full_file.access,full_file)
+	if val:
+		file_content=full_file.file_to_upload.readlines()
+		b=''
+		for i in file_content.__iter__():
+			b=b+i
+		return render_to_response('index/wysiwyg_editor.html',{'a':b, 'user':request.user,'employee_who_added_file':User.objects.get(id=full_file.employee_who_added_file.employee_id_id), 'file_path':full_file.file_to_upload.path,'file_id':full_file.id})
+	else:
+		return redirect(index)
 	pass
 def view_of_create_file(request):
 	return render_to_response('file/view_of_create_file.html')

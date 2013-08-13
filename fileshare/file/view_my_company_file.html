@@ -69,7 +69,6 @@
     <td>{{f.access}}</td>
     <td>
       <div class="text-right">
-      <a href='media/{{f.file_to_upload.name}}'>view</a>
       <a href='wysiwyg_editor/{{f.id}}' target='_blank'>view</a>
     </td>
       </div>
@@ -84,13 +83,18 @@
 <a href="/index"><input type='submit' class='btn btn-info' value='my files'></a>
 <form method='post' action='upload_file' enctype="multipart/form-data" class="form-horizontal">
   <div id="filemodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myfilemodal" aria-hidden="true">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myfilemodal">Upload File</h3>
-    </div>
-    <div class="modal-body">
-      <input type='file' name='document'>
-      <input type='submit'>
-    </div>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myfilemodal">Upload File</h3>
   </div>
-</form>
+  <div class="modal-body">
+    <input type='file' name='document'>
+    <select name='access'>
+      <option>PUBLIC</option>
+      <option>PRIVATE</option>
+      <option>COMPANY</option>
+    </select>
+    <input type='submit'>
+</div>
+</div>
+        </form>
