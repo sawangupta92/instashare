@@ -1,0 +1,13 @@
+view_of_create_company
+<form method="post" action="create_company">
+	{% csrf_token %}
+	name <input type='text' name='name'/>
+	password <input type='password' name='password'/>
+	add <input type='text' name='address'/>
+	phone <input type='text' name='phone'/>
+	website <input type='text' name='website'/>
+	email id <input type='text' name='email_id'/>	
+	fb_id <input type='text' name='fb_id'/>
+	twitter_id <input type='text' name='twitter_id'/>
+<input type='submit'/>
+</form>

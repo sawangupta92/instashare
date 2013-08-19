@@ -1,14 +1,14 @@
-# Django settings for fileshare project.
-from rauth import OAuth1Service
+# # Django settings for fileshare project.
+# # from rauth import OAuth1Service
 import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
+# ADMINS = (
+#     # ('Your Name', 'your_email@example.com'),
+# )
 
-MANAGERS = ADMINS
+# MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
@@ -105,8 +105,8 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
-TINYMCE_JS_URL = "/home/sawan/Desktop/instashare/fileshare/tiny_mce/tiny_mce.js"
-TINYMCE_JS_ROOT="/home/sawan/Desktop/instashare/fileshare/tiny_mce"
+# TINYMCE_JS_URL = "/home/sawan/Desktop/instashare/fileshare/tiny_mce/tiny_mce.js"
+# TINYMCE_JS_ROOT="/home/sawan/Desktop/instashare/fileshare/tiny_mce"
 ROOT_URLCONF = 'fileshare.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -132,11 +132,11 @@ INSTALLED_APPS = (
     'bootstrapped',
     # 'tinymce',
     'pagination',
-    'socialregistration',
-    'socialregistration.contrib.twitter',
-    'socialregistration.contrib.facebook',
+    # 'socialregistration',
+    # 'socialregistration.contrib.twitter',
+    # 'socialregistration.contrib.facebook',
     'dajaxice',
-    'softdelete',
+    # 'softdelete',
     'django_wysiwyg',
     # 'filer',
     # 'mptt',
@@ -160,34 +160,34 @@ INSTALLED_APPS = (
 # DJANGO_WYSIWYG_MEDIA_URL='/home/sawan/Desktop/instashare/media'+'tinymce/'
 AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
-        'socialregistration.contrib.facebook.auth.FacebookAuth',
+        # 'socialregistration.contrib.facebook.auth.FacebookAuth',
 
-        'socialregistration.contrib.twitter.auth.TwitterAuth',
+        # 'socialregistration.contrib.twitter.auth.TwitterAuth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     # 'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
+    "django.core.context_processors.debug",
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-    "django.core.context_processors.debug",
 )
-FACEBOOK_APP_ID = '156809224510615'
-FACEBOOK_SECRET_KEY = '3612fc5bb9416cf6e22b1894aef68b32'
-FACEBOOK_REQUEST_PERMISSIONS = ''
-twitter = OAuth1Service(
-    consumer_key='qXmrGK3UflaHcLYD8IUpBQ',
-    consumer_secret='cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24',
-    name='twitter',
-    access_token_url='https://api.twitter.com/oauth/access_token',
-    authorize_url='https://api.twitter.com/oauth/authorize',
-    request_token_url='https://api.twitter.com/oauth/request_token',
-    base_url='https://api.twitter.com/1/')
-TWITTER_CONSUMER_KEY = 'qXmrGK3UflaHcLYD8IUpBQ'
-TWITTER_CONSUMER_SECRET_KEY = 'cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24'
+# DAJAXICE_MEDIA_PREFIX="instashare/static/dajaxice"
+# FACEBOOK_APP_ID = '156809224510615'
+# FACEBOOK_SECRET_KEY = '3612fc5bb9416cf6e22b1894aef68b32'
+# FACEBOOK_REQUEST_PERMISSIONS = ''
+# twitter = OAuth1Service(
+#     consumer_key='qXmrGK3UflaHcLYD8IUpBQ',
+#     consumer_secret='cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24',
+#     name='twitter',
+#     access_token_url='https://api.twitter.com/oauth/access_token',
+#     authorize_url='https://api.twitter.com/oauth/authorize',
+#     request_token_url='https://api.twitter.com/oauth/request_token',
+#     base_url='https://api.twitter.com/1/')
+# TWITTER_CONSUMER_KEY = 'qXmrGK3UflaHcLYD8IUpBQ'
+# TWITTER_CONSUMER_SECRET_KEY = 'cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -207,12 +207,21 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler'
         }
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'dajaxice': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': True,
         },
     }

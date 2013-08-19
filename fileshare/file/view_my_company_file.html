@@ -26,7 +26,10 @@
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class="span2 divider-vertical "><a href="/company_operations">Company</a></li>
-      <li class="offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+    
+    <ul class='nav pull-right'>
+      <li><a href="/mylogout">Sign out</a></li>
     </ul>
   </div>
 </div>
@@ -95,6 +98,15 @@
       <option>COMPANY</option>
     </select>
     <input type='submit'>
+        <select name='tag' multiple>
+      {%for tag in tags%}
+        <option>
+          {{tag.tag}}
+        </option>
+      {%endfor%}
+    </select>
+    <input type='submit'>
+
 </div>
 </div>
         </form>

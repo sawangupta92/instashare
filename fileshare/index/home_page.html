@@ -1,11 +1,15 @@
 <!DOCTYPE HTML>
 {%load bootstrap%}
- {% bootstrap_css %}
  {% load dajaxice_templatetags %}
 {% dajaxice_js_import %}
 <script type="text/javascript" src="static/js/jquery.js">
 </script>
 <script type="text/javascript">
+function custom_error(){
+    alert('Custom error of my_function.');
+}
+
+// Dajaxice.simple.my_function(callback, {'user': 'tom'}, {'error_callback': custom_error});
 function my_js_callback(data){
   // alert(data.message)
   if (data.message==null){
@@ -28,18 +32,24 @@ body .my-modal-width {
 }
 </style>
  {% bootstrap_js modal transition %}
+ {% bootstrap_css %}
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class="span2 divider-vertical"><a href="/index">Index</a></li>
-      {% if not user.is_authenticated %}
-        <li><a class="offset11" data-toggle="modal" href="#signup">sign up</a></li>
-        <li ><a data-toggle="modal" href="#myModal">Login</a></li>
-      {% else%}
-        <li class="offset12"><a href="/mylogout">logout</a></li>
-      {% endif %}
     </ul>
+      {% if not user.is_authenticated %}
+
+    <ul class='nav pull-right'>
+        <li><a data-toggle="modal" href="#signup">sign up</a></li>
+        <li ><a data-toggle="modal" href="#myModal">Login</a></li>
+    </ul>
+      {% else%}
+    <ul class='nav pull-right'>
+      <li><a href="/mylogout">Sign out</a></li>
+    </ul>
+      {% endif %}
   </div>
 </div>
 <form method='POST' action='mylogin'>

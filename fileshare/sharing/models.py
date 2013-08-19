@@ -34,11 +34,12 @@ class roles(models.Model):
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
 	u_id=models.ForeignKey(User)
-class file_upload(forms.Form):
-	myfile=forms.FileField()
 class tag_file(models.Model):
 	tag=models.CharField(max_length=100)
+class file_upload(forms.Form):
+	myfile=forms.FileField()
 class my_file(models.Model):
+	file_tag=models.ManyToManyField(tag_file)
 	employee_who_added_file=models.ForeignKey(employee)
 	def get_upload_path(instance, filename):
 		e=employee.objects.get(id=instance.employee_who_added_file.id)
@@ -47,7 +48,6 @@ class my_file(models.Model):
 	access=models.CharField(max_length=50)
 	file_to_upload=models.FileField(upload_to=get_upload_path)
 	file_name=models.CharField(max_length="100")
-	file_tag=models.ManyToManyField(tag_file)
 class ExtFileField(forms.FileField):
     """
     Same as forms.FileField, but you can specify a file extension whitelist.

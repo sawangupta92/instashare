@@ -24,7 +24,10 @@ function my_js_callback(data){
     <a class="brand" href="home_page">Home</a>
     <ul class="nav">
       <li class=" span2"><a href="/index">Index</a></li>
-      <li class=" offset12"><a href="/mylogout">Sign out</a></li>
+    </ul>
+    
+    <ul class='nav pull-right'>
+      <li><a href="/mylogout">Sign out</a></li>
     </ul>
   </div>
 </div>
@@ -41,12 +44,12 @@ function my_js_callback(data){
 				<input type='text' required name='name'  id='text' required onfocusout="Dajaxice.sharing.sayhello(my_js_callback, {'text':$('#text').val()})" placeholder="username">
 			</div>
 		</div>
-		<div class="control-group">
+<!-- 		<div class="control-group">
 			<div class="controls">		
 				<input type='password' required name='password' placeholder="password">
 			</div>
 		</div>
-		<div class="control-group">
+ -->		<div class="control-group">
 			<div class="controls">
 				<input type='text' name='address' placeholder="address">
 			</div>
