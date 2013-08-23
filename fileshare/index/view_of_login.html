@@ -1,32 +1,18 @@
 <!DOCTYPE HTML>
  {%load bootstrap%}
  {% bootstrap_css %}
-<script type="text/javascript" src="static/js/jquery.js">
-</script>
- {% bootstrap_js modal transition %}
-
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="home_page">Home</a>
   </div>
 </div>
 <form method='POST' action='mylogin'>
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Enter Your Login Detail</h3>
   </div>
   <div class="modal-body">
     <input type='text' name='username'/>
     <input type='password' name='password'/>
   </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     <input type="submit" class="btn btn-primary">
   </div>
-</div>
-        </form>
-<div style="padding-bottom: 24px;">
-            <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Launch demo modal</a>
-          </div>
-          {{r}}
+</form>

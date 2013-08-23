@@ -59,6 +59,7 @@
     <td>emp name</td>
     <td>file name</td>
     <td>Access</td>
+    <td>tags</td>
     <td></td>
   </tr>
   <tr>
@@ -70,6 +71,13 @@
       {{f.file_name}}
     </td> 
     <td>{{f.access}}</td>
+    <td>
+      {%for c in f.file_tag.filter%}
+          {{c.tag}}
+        {%endfor%}
+        
+    </td>
+
     <td>
       <div class="text-right">
       <a href='wysiwyg_editor/{{f.id}}' target='_blank'>view</a>
@@ -97,7 +105,6 @@
       <option>PRIVATE</option>
       <option>COMPANY</option>
     </select>
-    <input type='submit'>
         <select name='tag' multiple>
       {%for tag in tags%}
         <option>

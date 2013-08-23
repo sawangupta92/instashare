@@ -1,4 +1,5 @@
 from django import forms
+from djangotoolbox.fields import ListField
 from django.db import models, connection, transaction
 from django.db import models
 from django import forms
@@ -36,6 +37,8 @@ class roles_emp(models.Model):
 	u_id=models.ForeignKey(User)
 class tag_file(models.Model):
 	tag=models.CharField(max_length=100)
+	# def __unicode__(self):
+	# 	return self.tag
 class file_upload(forms.Form):
 	myfile=forms.FileField()
 class my_file(models.Model):
@@ -44,7 +47,7 @@ class my_file(models.Model):
 	def get_upload_path(instance, filename):
 		e=employee.objects.get(id=instance.employee_who_added_file.id)
 		return os.path.join(
-			"company_%d" %e.company_id.id, "user_%d" % instance.employee_who_added_file.id,"%s" % instance.access, filename)
+			"company_%s" %e.company_id.id, "user_%s" % instance.employee_who_added_file.id,"%s" % instance.access, filename)
 	access=models.CharField(max_length=50)
 	file_to_upload=models.FileField(upload_to=get_upload_path)
 	file_name=models.CharField(max_length="100")
@@ -83,3 +86,10 @@ class ExtFileField(forms.FileField):
 if __name__ == "__main__":
     import doctest, datetime
     doctest.testmod()
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    # text = models.TextField(max_length=100)
+    # tags = ListField()
+    # comments = ListField()

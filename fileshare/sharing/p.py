@@ -1,11 +1,13 @@
 import subprocess
 import os
+# from models import *
 os.chdir('/home/sawan/Desktop/instashare')
 query='import'
-search=subprocess.check_output(['find', '-name', 'PRIVATE', '-exec', 'grep', '-R','-l', '-Hn', query, '{}', ';'])
-print search
+# search=subprocess.check_output(['find', '-name', 'PRIVATE', '-exec', 'grep', '-R','-l', '-Hn', query, '{}', ';'])
+# print search
 # c=3
-# a=subprocess.check_output(["grep","-R", "hello", "/home/sawan/Desktop/instashare/media/company_3/user_2"])
+b=subprocess.check_output(["grep","-R", "imp", "/home/sawan/Desktop/instashare/media"])
+print b
 # b='sasas'
 # a=subprocess.check_output(["grep","-R", "hello", "/home/sawan/Desktop/instashare/media/company_3/user_2/PUBLIC"])
 

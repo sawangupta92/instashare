@@ -51,7 +51,7 @@
 	<tr class="info">
 		<td>employee name</td>
 		<td>file name</td>
-		<td>Access</td>\
+		<td>Access</td>
 		<td>tags</td>
 		<td></td>
 	</tr>
@@ -60,10 +60,15 @@
 				<td>{{f.employee_who_added_file.employee_id.username}}</td>
 				<td>{{f.file_name}}</td>
 				<td>{{f.access}}</td>
-				<td>{{f.file_tag.values}}</td>
+				<td>
+				{%for c in f.file_tag.filter%}
+					{{c.tag}}
+				{%endfor%}
+				</td>
 				<td>
 				<div class="text-right">
 					<a href='wysiwyg_editor/{{f.id}}' target='_blank'>view</a>
+					<!-- <a href='file:///{{f.id}}' target='_blank'>view</a> -->
 					<input type='hidden' name='file_to_delete' value={{f.file_to_upload}}>
 					<input type='submit' value='delete' class='btn btn-link'/>
 				</div>

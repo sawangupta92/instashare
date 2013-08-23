@@ -57,6 +57,14 @@ class admin_decorator_required(object):
 			return self.orig_func(request, *args, **kwargs)
 		else:
 			return render_to_response('index/admin_decorator_required_fail.html')
+class login_required(object):
+	def __init__(self, orig_func):
+		self.orig_func = orig_func
+	def __call__(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			return self.orig_func(request, *args, **kwargs)
+		else:
+			return render_to_response('index/view_of_login.html')
 
 ####################################VIEW OF EMPLOYEE###########################################
 
@@ -68,15 +76,19 @@ def view_of_create_employee(request):#admin decorator logout
 @csrf_exempt
 @admin_decorator_required
 def create_employee(request):#admin decorator logout
-	u=User.objects.create_user(username=request.POST.get('name'),password=request.POST.get('password'),email=request.POST.get('email_id'),first_name=request.POST.get('f_name'),last_name=request.POST.get('l_name'))
+	u=User.objects.create_user(username=request.POST.get('name'),password=request.POST.get('password'),email=request.POST.get('email_id'))
+	u.first_name=request.POST.get('f_name')
+	u.last_name=request.POST.get('l_name')
+	u.save()
 	u_c=User.objects.get(username=request.user)
-	c=company.objects.get(company_id=u_c)
+	e=employee.objects.get(employee_id=u_c)
+	c=company.objects.get(id=e.company_id_id)
 	e=employee.objects.create(employee_id=u,company_id=c,address=request.POST.get('address') ,phone_no=request.POST.get('phone'),fb_id=request.POST.get('fb_id'), twitter_id=request.POST.get('tw_id'))
 	r_id=roles.objects.get(role_name=request.POST.get('role','tester'))
 	r=roles_emp.objects.create(roles_id=r_id,u_id=u)
 	# e.save()
 	# r.save()
-	return redirect(company)
+	return redirect(company_operations)
 	# return render_to_response('employee_template/create_employee.html')
 	# pass
 # @admin_decorator_required
@@ -88,13 +100,14 @@ def create_employee(request):#admin decorator logout
 def delete_employee(request):#admin decorator logout
 	u=User.objects.get(username=request.POST.get('employee_name'))
 	a=employee.objects.get(employee_id=u)
+	u.delete()
 	a.delete()
-	return redirect(company)
+	return redirect(company_operations)
 	# return render_to_response('employee_template/delete_employee.html')
 def view_of_update_employee(request,name):
 	employee_object=employee()
 	employee_fields=employee_object.fields_of_employee()
-	# return redirect(company)
+	# return redirect(company_operations)
 	return render_to_response('employee_template/view_of_update_employee.html',{'fields':employee_fields,'name':name})	
 	# pass
 @csrf_exempt
@@ -102,7 +115,7 @@ def employee_save_update(request):
 	a=employee.objects.get(employee_id=User.objects.get(username=request.POST.get('employee_name')))
 	setattr(a,request.POST.get('field'),request.POST.get('update'))
 	a.save()
-	return redirect(company)
+	return redirect(company_operations)
 	# return render_to_response('employee_template/employee_save_update.html',{'a':a})
 ###################################### VIEW OF COMPANY################################################
 @employee_already_associated_with_company
@@ -117,7 +130,7 @@ def create_company(request):#admin decorator logout
 	a.company_id=c
 	c.save()
 	a.save()
-	return redirect(company)
+	return redirect(company_operations)
 	# return render_to_response('company_template/create_company.html')
 # @admin_decorator_required
 # def view_of_delete_company(request):#logout add admin login decorator
@@ -131,7 +144,14 @@ def delete_company(request):#login also redirect to login page and logout the cu
 	# u=User.objects.get(username=request.POST.get('company_name'))
 	e=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	a=company.objects.get(id=e.company_id_id)
-	a.delete()
+	u_c=User.objects.get(username=a.company_id)
+	e=employee.objects.filter(company_id=a)
+	logout(request)
+	for d in e:
+		u_e=User.objects.filter(username=d.employee_id)
+		u_e.delete()
+		d.delete()
+	u_c.delete()
 	return redirect(home_page)
 	# return render_to_response('index/index.html')
 def view_of_update_company(request):
@@ -143,14 +163,14 @@ def company_save_update(request):
 	a=company.objects.get(company_id=User.objects.get(username=request.user))
 	setattr(a,request.GET.get('field','w'),request.GET.get('update','w'))
 	a.save()
-	return redirect(company)
+	return redirect(company_operations)
 	# return render_to_response('company_template/company_save_update.html')
 def company_operations(request):
 	all_objects=roles.objects.filter()
 	# emp=employee.objects.get(employee_id=User.objects.get(username=request.user))
 	# emps=company.objects.get(employee=User.objects.get(username=request.user)).employee_set.filter()
 	e=employee.objects.get(employee_id=User.objects.get(username=request.user))
-	emps=company.objects.get(employee=e).employee_set.filter()
+	emps=company.objects.get(id=e.company_id_id).employee_set.filter()
 	return render_to_response('company_template/company.html',{'emps':emps,'a':all_objects},context_instance=RequestContext(request))
 	# pass
 #########################################VIEW OF FILE##############################################
@@ -278,7 +298,8 @@ def update_file(request):
 	f.write(file_content)
 	# return wysiwyg_editor(request,path)
 	# return redirect(wysiwyg_editor(request,path))
-	return render_to_response('file/update_file.html',{'file_path':file_path})
+	# return render_to_response('file/update_file.html',{'file_path':file_path})
+	return redirect(index)
 ##########################################VIEW OF INDEX############################################
 # @csrf_protect
 def employee_already_associated_with_company_fail(request):
@@ -313,8 +334,8 @@ def sign_up(request):
 		return redirect(home_page)
 		# return render_to_response('index/view_of_sign_up.html',{'error':error})
 	# pass
-# def view_of_login(request):
-# 	return render_to_response('index/view_of_login.html',{'r':request.user})
+def view_of_login(request):
+	return render_to_response('index/view_of_login.html',{'r':request.user})
 @login_required
 @employee_already_associated_with_company
 def index(request):
@@ -336,10 +357,10 @@ def mylogin(request):
 			return redirect(index)
 			# return render_to_response('index/index.html',{'files':f})
 		else:
-			return redirect(home_page)
+			return redirect(view_of_login)
 			# return render_to_response('index/home_page.html')
 	else:
-		return redirect(home_page)
+		return redirect(view_of_login)
 		# return render_to_response('index/home_page.html',{'a':a})
 # def view_of_logout(request):
 	# return render_to_response('index/view_of_logout.html')
@@ -366,14 +387,6 @@ def fail(request):
 	return render_to_response('index/fail.html',context_instance=RequestContext(request))
 ################################view of search#######################################
 import subprocess
-def my_search_process(c_id,query,e_id):
-	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id)
-		if not subprocess.check_call(["grep","-R","-l", query,a]):
-			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
-			return search
-	except CalledProcessError:
-		return None
 	# pass
 def search_result(request):
 	e_id=employee.objects.get(employee_id=User.objects.get(username=request.user))
@@ -399,11 +412,19 @@ def where_to_Search(request):
 		result=public_search_process(query)
 	return result
 	# pass
+def my_search_process(c_id,query,e_id):
+	try:
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id)
+		if not subprocess.check_call(["grep","-R","-l", query,a]):
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
+			return search
+	except CalledProcessError:
+		return None
 def private_search_process(c_id,query,e_id):
 	try:
 		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id,"PRIVATE")
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
-			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/media/")
 			return search
 	except CalledProcessError:
 		return None
@@ -411,13 +432,13 @@ def company_search_process(c_id,query,e_id):
 	try:
 		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id,"COMPANY")
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
-			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/media/")
 			return search
 	except CalledProcessError:
 		return None
 def public_search_process(query):
 	try:
-		os.chdir('/home/sawan/Desktop/instashare/')
+		os.chdir('/home/sawan/Desktop/instashare/media/')
 		if not subprocess.check_call(('find','-name','PUBLIC','-exec','grep','-R','-Hn',query,'{}',';')):
 			search=subprocess.check_output(['find', '-name', 'PUBLIC', '-exec', 'grep', '-R','-l', '-Hn', query, '{}', ';']).split("./")
 			return search
