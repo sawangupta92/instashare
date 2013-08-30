@@ -8,63 +8,18 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'company'
-        db.create_table('sharing_company', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=14)),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('fb_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('twitter_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-        ))
-        db.send_create_signal('sharing', ['company'])
+        # Adding field 'my_file.file_tag'
+        db.add_column('sharing_my_file', 'file_tag',
+                      self.gf('django.db.models.fields.CharField')(default='2', max_length=500),
+                      keep_default=False)
 
-        # Adding model 'employee'
-        db.create_table('sharing_employee', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('company_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.company'], null=True)),
-            ('employee_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('project_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('project_desc', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('phone_no', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('fb_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('twitter_id', self.gf('django.db.models.fields.URLField')(max_length=200)),
-        ))
-        db.send_create_signal('sharing', ['employee'])
+        # Removing M2M table for field file_tag on 'my_file'
+        db.delete_table(db.shorten_name('sharing_my_file_file_tag'))
 
-        # Adding model 'roles'
-        db.create_table('sharing_roles', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('role_name', self.gf('django.db.models.fields.CharField')(max_length=20)),
-        ))
-        db.send_create_signal('sharing', ['roles'])
 
-        # Adding model 'roles_emp'
-        db.create_table('sharing_roles_emp', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('roles_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.roles'])),
-            ('u_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
-        db.send_create_signal('sharing', ['roles_emp'])
-
-        # Adding model 'tag_file'
-        db.create_table('sharing_tag_file', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('tag', self.gf('django.db.models.fields.CharField')(max_length=100)),
-        ))
-        db.send_create_signal('sharing', ['tag_file'])
-
-        # Adding model 'my_file'
-        db.create_table('sharing_my_file', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('employee_who_added_file', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sharing.employee'])),
-            ('access', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('file_to_upload', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
-            ('file_name', self.gf('django.db.models.fields.CharField')(max_length='100')),
-        ))
-        db.send_create_signal('sharing', ['my_file'])
+    def backwards(self, orm):
+        # Deleting field 'my_file.file_tag'
+        db.delete_column('sharing_my_file', 'file_tag')
 
         # Adding M2M table for field file_tag on 'my_file'
         m2m_table_name = db.shorten_name('sharing_my_file_file_tag')
@@ -74,29 +29,6 @@ class Migration(SchemaMigration):
             ('tag_file', models.ForeignKey(orm['sharing.tag_file'], null=False))
         ))
         db.create_unique(m2m_table_name, ['my_file_id', 'tag_file_id'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'company'
-        db.delete_table('sharing_company')
-
-        # Deleting model 'employee'
-        db.delete_table('sharing_employee')
-
-        # Deleting model 'roles'
-        db.delete_table('sharing_roles')
-
-        # Deleting model 'roles_emp'
-        db.delete_table('sharing_roles_emp')
-
-        # Deleting model 'tag_file'
-        db.delete_table('sharing_tag_file')
-
-        # Deleting model 'my_file'
-        db.delete_table('sharing_my_file')
-
-        # Removing M2M table for field file_tag on 'my_file'
-        db.delete_table(db.shorten_name('sharing_my_file_file_tag'))
 
 
     models = {
@@ -163,7 +95,7 @@ class Migration(SchemaMigration):
             'access': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'employee_who_added_file': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sharing.employee']"}),
             'file_name': ('django.db.models.fields.CharField', [], {'max_length': "'100'"}),
-            'file_tag': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['sharing.tag_file']", 'symmetrical': 'False'}),
+            'file_tag': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'file_to_upload': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },

@@ -1,3 +1,4 @@
+import subprocess
 # a=subprocess.Popen(('find'), stdout=subprocess.PIPE)
 # >>> o=subprocess.check_output(('grep','man'),stdin=a.stdout)
 # cd /home/sawan/Desktop/instashare| find -name PRIVATE -exec grep -R -Hn import {} \;
@@ -24,6 +25,7 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist 
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
+import csv
 # twitter = OAuth1Service(
 #     consumer_key='qXmrGK3UflaHcLYD8IUpBQ',
 #     consumer_secret='cobN4a9Nu4rh8Rr6i3NV3AXHIVBUYl2i31PpE7fg24',
@@ -200,11 +202,11 @@ def upload_file(request):#logout index delete_file view_my_file view_company_fil
 		a=request.FILES['document']
 		t = ExtFileField(ext_whitelist=(".py", ".txt"))
 		t.clean(SimpleUploadedFile(a.name,'Some File Content'))
-		instance=my_file.objects.create(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'], access=request.POST.get('access','PUBLIC'))
+		instance=my_file.objects.create(file_to_upload=request.FILES['document'],employee_who_added_file=emp, file_name=request.FILES['document'], access=request.POST.get('access','PUBLIC'),file_tag=request.POST.getlist('tag'))
 		# instance.save()
-		tags=request.POST.getlist('tag')
-		for tag in tags:
-			instance.file_tag.add(tag_file.objects.get(tag=tag))
+		# tags=request.POST.getlist('tag')
+		# for tag in tags:
+		# 	instance.file_tag.add(tag_file.objects.get(tag=tag))
 		return redirect(index)
 		pass
 	except ValidationError, e:
@@ -221,11 +223,11 @@ def view_my_company_file(request):#logout index delete_file view_my_file add_fil
 	e=employee.objects.get(employee_id=a.id)
 	c=company.objects.get(id=e.company_id_id)
 	emps=employee.objects.filter(company_id=c)
-	files=my_file.objects.filter(Q(employee_who_added_file__in=emps)&Q(access='COMPANY'))
-	tags=tag_file.objects.filter()
-	# files=my_file.objects.filter(Q(access='COMPANY')|Q(access='PUBLIC'))
+	# files=my_file.objects.filter(Q(employee_who_added_file__in=emps)&Q(access='COMPANY'))
+	# tags=tag_file.objects.filter()
+	files=my_file.objects.filter(access='COMPANY')
 	pages=Paginator(files,10)
-	return render_to_response('file/view_my_company_file.html',{'name':files, 'pages':pages.object_list,'tags':tags, 'p':list(files)},context_instance=RequestContext(request))
+	return render_to_response('file/view_my_company_file.html',{'name':files, 'pages':pages.object_list,'p':list(files)},context_instance=RequestContext(request))
 	# pass
 # def view_of_delete_file(request):#logout index  view_my_file view_company_file* add_file
 # 	a=User.objects.get(username=request.user)
@@ -300,6 +302,21 @@ def update_file(request):
 	# return redirect(wysiwyg_editor(request,path))
 	# return render_to_response('file/update_file.html',{'file_path':file_path})
 	return redirect(index)
+def v_save_csv(request):
+	return render_to_response('file/v_save_csv.html')
+@csrf_exempt
+def save_csv(request):
+	f=request.FILES['document']
+	c=[]
+	for a in f.readlines():
+		c.append(a.row)
+	# a=file('/home/sawan/Desktop/instashare/fileshare/file/IMPORTANT_FILE.csv','w')
+	# csv_file=a.write(f.read())
+	# com="mongoimport -d instashare -c sharing_employee --type csv --file IMPORTANT_FILE.csv --headerline"
+	# command="mongoimport -d instashare -c sharing_employee --type csv --file /home/sawan/Desktop/instashare/fileshare/file/IMPORTANT_FILE.csv --headerline"
+	# mongo_command=subprocess.check_output(['mongoimport', '-d', 'instashare', '-c', 'sharing_employee', '--type', 'csv', '--file', '/home/sawan/Desktop/instashare/fileshare/file/IMPORTANT_FILE.csv', '--headerline'],shell=True)
+	return render_to_response('file/save_csv.html',{'f':c})
+
 ##########################################VIEW OF INDEX############################################
 # @csrf_protect
 def employee_already_associated_with_company_fail(request):
@@ -342,8 +359,8 @@ def index(request):
 	a=User.objects.get(username=request.user)
 	e=employee.objects.get(employee_id=a.id)
 	f=my_file.objects.filter(employee_who_added_file=e)
-	tags=tag_file.objects.filter()
-	return render_to_response('index/index.html',{'files':f,'tags':tags},context_instance=RequestContext(request))
+	# tags=tag_file.objects.filter()
+	return render_to_response('index/index.html',{'files':f},context_instance=RequestContext(request))
 @csrf_exempt
 def mylogin(request):
 	user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
@@ -386,7 +403,6 @@ def test(request):
 def fail(request):
 	return render_to_response('index/fail.html',context_instance=RequestContext(request))
 ################################view of search#######################################
-import subprocess
 	# pass
 def search_result(request):
 	e_id=employee.objects.get(employee_id=User.objects.get(username=request.user))
@@ -414,7 +430,7 @@ def where_to_Search(request):
 	# pass
 def my_search_process(c_id,query,e_id):
 	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id)
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%s" %c_id,"user_%s" %e_id)
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
 			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
 			return search
@@ -422,7 +438,7 @@ def my_search_process(c_id,query,e_id):
 		return None
 def private_search_process(c_id,query,e_id):
 	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id,"PRIVATE")
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%s" %c_id,"user_%s" %e_id,"PRIVATE")
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
 			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/media/")
 			return search
@@ -430,7 +446,7 @@ def private_search_process(c_id,query,e_id):
 		return None
 def company_search_process(c_id,query,e_id):
 	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%d" %c_id,"user_%d" %e_id,"COMPANY")
+		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%s" %c_id,"user_%s" %e_id,"COMPANY")
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
 			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/media/")
 			return search

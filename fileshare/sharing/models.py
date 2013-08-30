@@ -1,3 +1,4 @@
+from adaptor.model import CsvModel
 from django import forms
 from djangotoolbox.fields import ListField
 from django.db import models, connection, transaction
@@ -35,14 +36,15 @@ class roles(models.Model):
 class roles_emp(models.Model):
 	roles_id=models.ForeignKey(roles)
 	u_id=models.ForeignKey(User)
-class tag_file(models.Model):
-	tag=models.CharField(max_length=100)
+# class tag_file(models.Model):
+	# tag=models.CharField(max_length=100)
 	# def __unicode__(self):
 	# 	return self.tag
 class file_upload(forms.Form):
 	myfile=forms.FileField()
 class my_file(models.Model):
-	file_tag=models.ManyToManyField(tag_file)
+	# file_tag=models.ManyToManyField(tag_file)
+	file_tag=models.CharField(max_length=500)
 	employee_who_added_file=models.ForeignKey(employee)
 	def get_upload_path(instance, filename):
 		e=employee.objects.get(id=instance.employee_who_added_file.id)
@@ -86,10 +88,8 @@ class ExtFileField(forms.FileField):
 if __name__ == "__main__":
     import doctest, datetime
     doctest.testmod()
-
-
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    # text = models.TextField(max_length=100)
-    # tags = ListField()
-    # comments = ListField()
+import csv
+class MyCSvModel(CsvModel,models.Model):
+	name = models.CharField(max_length=100)
+	# class Meta:
+	# 	delimiter = ','

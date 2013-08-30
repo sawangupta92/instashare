@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+ <!DOCTYPE HTML>
  {%load bootstrap%}
 {%load pagination_tags%}
  {% bootstrap_css %}
@@ -60,10 +60,11 @@
 				<td>{{f.employee_who_added_file.employee_id.username}}</td>
 				<td>{{f.file_name}}</td>
 				<td>{{f.access}}</td>
+
+				<!--######################################################################################-->
+				
 				<td>
-				{%for c in f.file_tag.filter%}
-					{{c.tag}}
-				{%endfor%}
+					{{f.file_tag}}
 				</td>
 				<td>
 				<div class="text-right">
@@ -98,11 +99,16 @@
   		<option>COMPANY</option>
   	</select>
   	<select name='tag' multiple>
-  		{%for tag in tags%}
-  			<option>
-  				{{tag.tag}}
-  			</option>
-  		{%endfor%}
+  			<option>Django</option>
+  			<option>Python</option>
+  			<option>c</option>
+  			<option>c++</option>
+  			<option>Java</option>
+  			<option>.Net</option>
+  			<option>php</option>
+  			<option>mysql</option>
+  			<option>mongodb</option>
+  			<option>ruby</option>
   	</select>
     <input type='submit'>
 </div>

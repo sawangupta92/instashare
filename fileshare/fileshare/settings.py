@@ -3,7 +3,6 @@
 import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
 # ADMINS = (
 #     # ('Your Name', 'your_email@example.com'),
 # )
@@ -119,8 +118,11 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-
-INSTALLED_APPS = (
+SOUTH_DATABASE_ADAPTERS = {
+    'default': "south.db.mysql"
+}
+delimiter=','
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -132,6 +134,7 @@ INSTALLED_APPS = (
     'sharing',
     'bootstrapped',
     # 'tinymce',
+    'csvimport',
     'pagination',
     # 'socialregistration',
     # 'socialregistration.contrib.twitter',
@@ -139,6 +142,8 @@ INSTALLED_APPS = (
     'dajaxice',
     # 'softdelete',
     'django_wysiwyg',
+    'djangotoolbox',
+    # 'south',
     # 'filer',
     # 'mptt',
     # 'easy_thumbnails',
@@ -150,7 +155,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-)
+]
 # HAYSTACK_CONNECTIONS = {
 #     'default': {
 #         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
