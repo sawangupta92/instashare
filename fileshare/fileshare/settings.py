@@ -67,6 +67,18 @@ STATIC_ROOT = '/home/sawan/Desktop/instashare/static/'
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'sawan.gupta92@gmail.com'
+
+DEFAULT_FROM_EMAIL= 'sawan.gupta92@gmail.com'
+
+SERVER_EMAIL = 'sawan.gupta92@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'bhagatsingh'
+
+EMAIL_PORT = 587
 
 # Additional locations of static files
 STATICFILES_DIRS = (

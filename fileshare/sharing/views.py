@@ -1,4 +1,5 @@
 import subprocess
+import random
 # a=subprocess.Popen(('find'), stdout=subprocess.PIPE)
 # >>> o=subprocess.check_output(('grep','man'),stdin=a.stdout)
 # cd /home/sawan/Desktop/instashare| find -name PRIVATE -exec grep -R -Hn import {} \;
@@ -304,18 +305,54 @@ def update_file(request):
 	return redirect(index)
 def v_save_csv(request):
 	return render_to_response('file/v_save_csv.html')
+def GenerateUsername():
+    username = str(random.randint(0,1000000))
+    try:
+        User.objects.get(username=username)
+        return GenerateUsername()
+    except User.DoesNotExist:
+        return username;
+def get_current_company(request):
+	u_c=User.objects.get(username=request.user)
+	e=employee.objects.get(employee_id=u_c)
+	c=company.objects.get(id=e.company_id_id)
+	return c
+def get_email_id(first_line):
+	try:
+		return first_line.index('email')
+	except ValueError:
+		return None
 @csrf_exempt
 def save_csv(request):
 	f=request.FILES['document']
-	c=[]
+	first_line=f.readline().split(',')	
 	for a in f.readlines():
-		c.append(a.row)
-	# a=file('/home/sawan/Desktop/instashare/fileshare/file/IMPORTANT_FILE.csv','w')
-	# csv_file=a.write(f.read())
-	# com="mongoimport -d instashare -c sharing_employee --type csv --file IMPORTANT_FILE.csv --headerline"
-	# command="mongoimport -d instashare -c sharing_employee --type csv --file /home/sawan/Desktop/instashare/fileshare/file/IMPORTANT_FILE.csv --headerline"
-	# mongo_command=subprocess.check_output(['mongoimport', '-d', 'instashare', '-c', 'sharing_employee', '--type', 'csv', '--file', '/home/sawan/Desktop/instashare/fileshare/file/IMPORTANT_FILE.csv', '--headerline'],shell=True)
-	return render_to_response('file/save_csv.html',{'f':c})
+		employee_obj=employee()
+		rest_of_lines=[]
+		rest_of_lines.append(a.split(','))
+		i=0
+		username=GenerateUsername()
+		email_field=get_email_id(first_line)
+		user_save=User.objects.create_user(username=username,password=username,email='ok')
+		current_company=get_current_company(request)
+		employee_obj.employee_id=user_save
+		employee_obj.company_id=current_company
+		for cont in rest_of_lines:
+			f=first_line[i]
+			employee_obj.f=cont[i]
+			i=i+1
+		employee_obj.save()
+		user_save.email=rest_of_lines[0][email_field]
+		user_save.save()
+		message='your username and password is %s' %username
+		user_save.email_user('subject',message, from_email=None)
+	return redirect(company_operations)
+	# all_objects=roles.objects.filter()
+	# e=employee.objects.get(employee_id=User.objects.get(username=request.user))
+	# emps=company.objects.get(id=e.company_id_id).employee_set.filter()
+	# return render_to_response('company_template/company.html',{'emps':emps,'a':all_objects},context_instance=RequestContext(request))
+
+	# return render_to_response('company_template/company.html')
 
 ##########################################VIEW OF INDEX############################################
 # @csrf_protect
