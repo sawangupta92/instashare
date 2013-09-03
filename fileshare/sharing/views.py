@@ -2,7 +2,7 @@ import subprocess
 import random
 # a=subprocess.Popen(('find'), stdout=subprocess.PIPE)
 # >>> o=subprocess.check_output(('grep','man'),stdin=a.stdout)
-# cd /home/sawan/Desktop/instashare| find -name PRIVATE -exec grep -R -Hn import {} \;
+# cd /home/sawan/Desktop| find -name PRIVATE -exec grep -R -Hn import {} \;
 from django.core.files.base import ContentFile
 from django.core.files import File
 from django.contrib.auth import authenticate, login
@@ -181,8 +181,8 @@ def company_operations(request):
 # 	# import mimetypes
 # 	# import os
 # 	# mimetypes.init()
-# 	# file_path="/home/sawan/Desktop/instashare/readme.txt"
-# 	fsock=open("/home/sawan/Desktop/instashare/readme.txt","rb")
+# 	# file_path="/home/sawan/Desktop/readme.txt"
+# 	fsock=open("/home/sawan/Desktop/readme.txt","rb")
 # 	f=fsock.readlines()
 # 	# file_name=os.path.basename(file_path)
 # 	# mime_type_guess=mimetypes.guess_type(file_name)
@@ -467,31 +467,31 @@ def where_to_Search(request):
 	# pass
 def my_search_process(c_id,query,e_id):
 	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%s" %c_id,"user_%s" %e_id)
+		a=os.path.join("/home/sawan/Desktop/media/company_%s" %c_id,"user_%s" %e_id)
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
-			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/")
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/")
 			return search
 	except CalledProcessError:
 		return None
 def private_search_process(c_id,query,e_id):
 	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%s" %c_id,"user_%s" %e_id,"PRIVATE")
+		a=os.path.join("/home/sawan/Desktop/media/company_%s" %c_id,"user_%s" %e_id,"PRIVATE")
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
-			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/media/")
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/media/")
 			return search
 	except CalledProcessError:
 		return None
 def company_search_process(c_id,query,e_id):
 	try:
-		a=os.path.join("/home/sawan/Desktop/instashare/media/company_%s" %c_id,"user_%s" %e_id,"COMPANY")
+		a=os.path.join("/home/sawan/Desktop/media/company_%s" %c_id,"user_%s" %e_id,"COMPANY")
 		if not subprocess.check_call(["grep","-R","-l", query,a]):
-			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/instashare/media/")
+			search=subprocess.check_output(["grep","-R", "-l", query,a]).split("/home/sawan/Desktop/media/")
 			return search
 	except CalledProcessError:
 		return None
 def public_search_process(query):
 	try:
-		os.chdir('/home/sawan/Desktop/instashare/media/')
+		os.chdir('/home/sawan/Desktop/media/')
 		if not subprocess.check_call(('find','-name','PUBLIC','-exec','grep','-R','-Hn',query,'{}',';')):
 			search=subprocess.check_output(['find', '-name', 'PUBLIC', '-exec', 'grep', '-R','-l', '-Hn', query, '{}', ';']).split("./")
 			return search

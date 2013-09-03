@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/Desktop/instashare/ENV python
 import os
 import sys
 
